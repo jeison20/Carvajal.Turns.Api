@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Domain.Entities
+namespace Carvajal.Turns.Domain.Entities
 {
     public class MessageMailman
     {

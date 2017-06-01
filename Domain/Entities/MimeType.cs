@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Domain.Entities
+namespace Carvajal.Turns.Domain.Entities
 {
 	public static class MimeType
 	{

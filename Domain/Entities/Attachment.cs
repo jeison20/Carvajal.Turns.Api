@@ -5,7 +5,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace Domain.Entities
+namespace Carvajal.Turns.Domain.Entities
 {
 	[Serializable]
 	public class Attachment : IXmlSerializable

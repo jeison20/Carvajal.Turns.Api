@@ -1,7 +1,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace Domain.Entities
+namespace Carvajal.Turns.Domain.Entities
 {
 	[Serializable]
 	public class Address

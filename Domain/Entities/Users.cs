@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Entities
+namespace Carvajal.Turns.Domain.Entities
 {
     public class Users
     {

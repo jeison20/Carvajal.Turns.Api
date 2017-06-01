@@ -1,10 +1,9 @@
-using Domain.Entities;
 using System;
 using System.Collections.Generic;
 
 namespace Carvajal.Turns.Domain.Entities
 {
-	[Serializable]
+    [Serializable]
 	public class Message
 	{
 		private bool isCarbonCopy;

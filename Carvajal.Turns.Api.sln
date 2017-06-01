@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carvajal.Turns.Api", "AuthorizationServer3\Carvajal.Turns.Api.csproj", "{3F1ECEDF-3144-4FFB-9D53-6148815F3AE9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carvajal.Turns.Api", "Carvajal.Turns.Api\Carvajal.Turns.Api.csproj", "{3F1ECEDF-3144-4FFB-9D53-6148815F3AE9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{E5290C45-C07C-4DA4-A11E-9ED80085C60D}"
 EndProject
