@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carvajal.Turns.Api", "AuthorizationServer3\Carvajal.Turns.Api.csproj", "{3F1ECEDF-3144-4FFB-9D53-6148815F3AE9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{E5290C45-C07C-4DA4-A11E-9ED80085C60D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carvajal.Turns.Data", "Data\Carvajal.Turns.Data.csproj", "{53F04BF3-A39F-45E7-96F5-ED2D8DAC749D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carvajal.Turns.Component", "Component\Carvajal.Turns.Component.csproj", "{6F73D9F3-CC7B-42D5-8805-A2A959C23CB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carvajal.Turns.Domain", "Domain\Carvajal.Turns.Domain.csproj", "{3E96D045-F6A3-4E37-9C96-12630DB2B7AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carvajal.Turns.Utils", "Carvajal.Turns.Utils\Carvajal.Turns.Utils.csproj", "{897964BE-0FC6-449B-B492-908B95270E83}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3F1ECEDF-3144-4FFB-9D53-6148815F3AE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F1ECEDF-3144-4FFB-9D53-6148815F3AE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F1ECEDF-3144-4FFB-9D53-6148815F3AE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F1ECEDF-3144-4FFB-9D53-6148815F3AE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53F04BF3-A39F-45E7-96F5-ED2D8DAC749D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53F04BF3-A39F-45E7-96F5-ED2D8DAC749D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53F04BF3-A39F-45E7-96F5-ED2D8DAC749D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53F04BF3-A39F-45E7-96F5-ED2D8DAC749D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F73D9F3-CC7B-42D5-8805-A2A959C23CB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F73D9F3-CC7B-42D5-8805-A2A959C23CB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F73D9F3-CC7B-42D5-8805-A2A959C23CB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F73D9F3-CC7B-42D5-8805-A2A959C23CB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E96D045-F6A3-4E37-9C96-12630DB2B7AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E96D045-F6A3-4E37-9C96-12630DB2B7AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E96D045-F6A3-4E37-9C96-12630DB2B7AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E96D045-F6A3-4E37-9C96-12630DB2B7AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{897964BE-0FC6-449B-B492-908B95270E83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{897964BE-0FC6-449B-B492-908B95270E83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{897964BE-0FC6-449B-B492-908B95270E83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{897964BE-0FC6-449B-B492-908B95270E83}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{53F04BF3-A39F-45E7-96F5-ED2D8DAC749D} = {E5290C45-C07C-4DA4-A11E-9ED80085C60D}
+		{6F73D9F3-CC7B-42D5-8805-A2A959C23CB2} = {E5290C45-C07C-4DA4-A11E-9ED80085C60D}
+		{3E96D045-F6A3-4E37-9C96-12630DB2B7AE} = {E5290C45-C07C-4DA4-A11E-9ED80085C60D}
+		{897964BE-0FC6-449B-B492-908B95270E83} = {E5290C45-C07C-4DA4-A11E-9ED80085C60D}
+	EndGlobalSection
+EndGlobal
