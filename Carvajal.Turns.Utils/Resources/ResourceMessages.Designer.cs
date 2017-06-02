@@ -70,7 +70,7 @@ namespace Carvajal.Turns.Utils.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to M10.
+        ///   Looks up a localized string similar to No existe información para visualizar.
         /// </summary>
         internal static string M10 {
             get {
@@ -88,7 +88,7 @@ namespace Carvajal.Turns.Utils.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to M17.
+        ///   Looks up a localized string similar to &quot;¿Está seguro de salir? Se perderán los cambios que no ha guardado&quot;.
         /// </summary>
         internal static string M17 {
             get {
@@ -142,7 +142,7 @@ namespace Carvajal.Turns.Utils.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to M5.
+        ///   Looks up a localized string similar to Debe ingresar {0}.
         /// </summary>
         internal static string M5 {
             get {

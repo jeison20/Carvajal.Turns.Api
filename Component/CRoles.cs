@@ -58,7 +58,7 @@ namespace Component
                 else if (IdentificationRol.Equals("AC"))
                     return Instance.Roles.Where(c => c.PkIdentifier == IdentificationRol || c.PkIdentifier == "OC" || c.PkIdentifier == "FA").ToList();
                 else if (IdentificationRol.Equals("OC"))
-                    return Instance.Roles.Where(c => c.PkIdentifier == IdentificationRol || c.PkIdentifier == "OC").ToList();
+                    return Instance.Roles.Where(c => c.PkIdentifier == IdentificationRol || c.PkIdentifier == "AC").ToList();
 
                 return Instance.Roles.Where(c => c.PkIdentifier == IdentificationRol).ToList();
             }

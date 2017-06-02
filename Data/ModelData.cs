@@ -35,7 +35,7 @@ namespace Data
         public virtual DbSet<Companies> Companies { get; set; }
         public virtual DbSet<Options> Options { get; set; }
         public virtual DbSet<OptionsRol> OptionsRol { get; set; }
-
+        public virtual DbSet<LinkedCentres> LinkedCentres { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

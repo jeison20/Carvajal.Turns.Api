@@ -181,7 +181,35 @@ namespace Component
             List<Users> ObjectUser = new List<Users>();
             try
             {
-                ObjectUser = Instance.Users.Where(c => c.FkRole_Identifier == PKRol && c.FkCompanies_Identifier == User.FkCompanies_Identifier).ToList();
+                if (User.FkRole_Identifier.Equals("FA"))
+                {
+                    ObjectUser = Instance.Users.Where(c => c.FkRole_Identifier == PKRol && c.FkCompanies_Identifier == User.FkCompanies_Identifier).ToList();
+                }
+                else
+                {
+                    List<Centres> Centres = CLinkedCentres.Instance.SearchCentresForUser(User.PkIdentifier);
+                    List<Users> Users = new List<Users>();
+                    if (Centres != null)
+                    {
+                        foreach (var item in Centres)
+                        {
+                            List<Users> ListUserCenter = new List<Users>();
+                            ListUserCenter = CLinkedCentres.Instance.SearchUsersForCenter(item.PkIdentifier);
+                            if (Users.Count == 0)
+                                Users = ListUserCenter;
+                            else if (Users.Count > 0 && ListUserCenter != null && ListUserCenter.Count > 0)
+                            {
+                                Users.AddRange(ListUserCenter);
+                            }
+                        }
+
+                        if (Users.Count > 0)
+                            ObjectUser = Users;
+
+                        ObjectUser = ObjectUser.Where(c => c.FkRole_Identifier.Equals(PKRol)).ToList();
+                    }
+                }
+
                 if (!string.IsNullOrEmpty(FilterNombre) && ObjectUser.Count > 0)
                 {
                     ObjectUser = ObjectUser.Where(c => c.Name.Trim().ToUpper().Contains(FilterNombre.Trim().ToUpper())).ToList();
@@ -205,6 +233,87 @@ namespace Component
                     LogComponent.WriteError(User.FkCompanies_Identifier, "0", "SearchUserRolCompany" + "BGM" + ex.Message);
                 else
                     LogComponent.WriteError("ErrorConsultBD", "0", "SearchUserRolCompany" + "BGM" + ex.Message);
+
+                return null;
+            }
+        }
+
+        public List<Carvajal.Turns.Domain.Entities.Users> SearchUserCompany(Users User, string PKRol, string FilterIdentification, string FilterName, bool? Active)
+        {
+            List<Users> ObjectUser = new List<Users>();
+            try
+            {
+                List<Centres> Centres = CLinkedCentres.Instance.SearchCentresForUser(User.PkIdentifier);
+                List<Users> Users = new List<Users>();
+                if (Centres != null)
+                {
+                    foreach (var item in Centres)
+                    {
+                        List<Users> ListUserCenter = new List<Users>();
+                        ListUserCenter = CLinkedCentres.Instance.SearchUsersForCenter(item.PkIdentifier);
+                        if (Users.Count == 0)
+                            Users = ListUserCenter;
+                        else if (Users.Count > 0 && ListUserCenter != null && ListUserCenter.Count > 0)
+                        {
+                            Users.AddRange(ListUserCenter);
+                        }
+                    }
+
+                    if (Users.Count > 0)
+                        ObjectUser = Users;
+
+                    if (!string.IsNullOrEmpty(PKRol))
+                        ObjectUser = ObjectUser.Where(c => c.FkRole_Identifier.Equals(PKRol)).ToList();
+
+                    if (!string.IsNullOrEmpty(FilterName) && ObjectUser != null && ObjectUser.Count > 0)
+                    {
+                        ObjectUser = ObjectUser.Where(c => c.Name.Trim().ToUpper().Contains(FilterName.Trim().ToUpper())).ToList();
+                    }
+                    if (!string.IsNullOrEmpty(FilterIdentification) && ObjectUser != null && ObjectUser.Count > 0)
+                    {
+                        ObjectUser = ObjectUser.Where(c => c.PkIdentifier.Trim().Equals(FilterIdentification.Trim())).ToList();
+                    }
+                    if (Active != null && ObjectUser != null && ObjectUser.Count > 0)
+                    {
+                        ObjectUser = ObjectUser.Where(c => c.Status == Active).ToList();
+                    }
+                }
+                else if (Centres == null)
+                    return null;
+
+                if (ObjectUser != null)
+                {
+                    List<Carvajal.Turns.Domain.Entities.Users> ListUser = (from a in ObjectUser
+                                                                           join r in Roles on a.FkRole_Identifier equals r.PkIdentifier
+                                                                           select new Carvajal.Turns.Domain.Entities.Users
+                                                                           {
+                                                                               PkIdentifier = a.PkIdentifier,
+                                                                               ChangePasswordNextTime = a.ChangePasswordNextTime,
+                                                                               Password = "",
+                                                                               Name = a.Name,
+                                                                               LastAccess = DateTime.Now,
+                                                                               FkRole_Identifier = r.Name,
+                                                                               Email = a.Email,
+                                                                               Status = a.Status,
+                                                                               Phone = a.Phone,
+                                                                               LastChangeDate = DateTime.Now,
+                                                                               FkCompanies_Identifier = a.FkCompanies_Identifier,
+                                                                               FkCountries_Identifier = "",
+                                                                               Address = a.Address,
+                                                                               Center = ""
+                                                                           }).ToList();
+
+                    return ListUser;
+                }
+                else
+                    return new List<Carvajal.Turns.Domain.Entities.Users>();
+            }
+            catch (Exception ex)
+            {
+                if (ObjectUser != null)
+                    LogComponent.WriteError(User.FkCompanies_Identifier, "0", "SearchUserCompany" + "BGM" + ex.Message);
+                else
+                    LogComponent.WriteError("ErrorConsultBD", "0", "SearchUserCompany" + "BGM" + ex.Message);
 
                 return null;
             }

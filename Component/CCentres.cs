@@ -67,8 +67,7 @@ namespace Component
                 return null;
             }
         }
-    
-
+       
         public bool DeleteCenter(Centres Center)
         {
             try

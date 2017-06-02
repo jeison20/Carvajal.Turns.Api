@@ -121,13 +121,13 @@
     <value>Rango de Fechas no Válido</value>
   </data>
   <data name="M10" xml:space="preserve">
-    <value>M10</value>
+    <value>No existe información para visualizar</value>
   </data>
   <data name="M12" xml:space="preserve">
     <value>El proceso no se terminó satisfactoriamente. Intente nuevamente en unos segundos.</value>
   </data>
   <data name="M17" xml:space="preserve">
-    <value>M17</value>
+    <value>"¿Está seguro de salir? Se perderán los cambios que no ha guardado"</value>
   </data>
   <data name="M27" xml:space="preserve">
     <value>Los datos ingresados son inválidos o el usuario se encuentra inactivo</value>
@@ -145,7 +145,7 @@
     <value>La Nueva contraseña no puede ser igual a las cinco ultimas contraseñas registradas en el sistema</value>
   </data>
   <data name="M5" xml:space="preserve">
-    <value>M5</value>
+    <value>Debe ingresar {0}</value>
   </data>
   <data name="M7" xml:space="preserve">
     <value>Usuario y/o Contraseña no válidos</value>

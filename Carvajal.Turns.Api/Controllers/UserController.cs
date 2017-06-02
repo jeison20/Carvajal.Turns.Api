@@ -13,7 +13,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using Carvajal.Turns.Domain;
 
 namespace Carvajal.Turns.Api.Controllers
 {
@@ -458,8 +457,25 @@ namespace Carvajal.Turns.Api.Controllers
                     ObjectUserDomain.Address = ObjectUser.Address;
                     if (!ObjectUser.FkRole_Identifier.Equals(ConfigurationManager.AppSettings["RolAdmin"]))
                     {
-                        Centres ObjectCenter = CCentres.Instance.SearchCenterResponsibleUser(ObjectUser.PkIdentifier);
-                        ObjectUserDomain.Center = ObjectCenter == null ? null : ObjectCenter.Name;
+                        List<Centres> Centres = CLinkedCentres.Instance.SearchCentresForUser(ObjectUser.PkIdentifier);
+                        if (Centres != null && Centres.Count > 0)
+                            ObjectUserDomain.Center = Centres[0].Name;
+                    }
+                    else
+                    {
+                        List<Centres> ObjectListCentres = new List<Centres>();
+                        ObjectListCentres = CLinkedCentres.Instance.SearchCentresForUser(ObjectUser.PkIdentifier);
+                        if (ObjectListCentres != null)
+                        {
+                            string Center = string.Empty;
+                            foreach (var item in ObjectListCentres)
+                            {
+                                if (string.IsNullOrEmpty(Center))
+                                    Center = item.Name;
+                                else
+                                    Center = Center + "," + item.Name;
+                            }
+                        }
                     }
 
                     #region Retorna informacion
@@ -496,9 +512,16 @@ namespace Carvajal.Turns.Api.Controllers
                 #region Retorna informacion
 
                 ListObjectRol = CRoles.Instance.SearchTypeUserRols(Rol);
-
-                return Request.CreateResponse(HttpStatusCode.OK, ListObjectRol,
-                        new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                if (ListObjectRol != null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, ListObjectRol,
+                            new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M12"),
+                                            new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                }
 
                 #endregion Retorna informacion
             }
@@ -524,19 +547,97 @@ namespace Carvajal.Turns.Api.Controllers
                 #region Retorna informacion
 
                 User = CToken.Instance.GetUserToken(tokenRequest);
-                ObjectUser = CUsers.Instance.SearchUser(User);
-
-                ListObjectUser = CUsers.Instance.SearchUserRolCompany(ObjectUser, Rol);
-
-                if (ListObjectUser != null)
+                if (!string.IsNullOrEmpty(User))
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, ListObjectUser,
-                                           new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                    ObjectUser = CUsers.Instance.SearchUser(User);
+
+                    ListObjectUser = CUsers.Instance.SearchUserRolCompany(ObjectUser, Rol);
+
+                    if (ListObjectUser != null)
+                    {
+                        if (ListObjectUser.Count > 0)
+                        {
+                            return Request.CreateResponse(HttpStatusCode.OK, ListObjectUser,
+                                                   new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M10"),
+                                                   new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M12"),
+                                             new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                    }
                 }
                 else
                 {
                     return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M12"),
-                                         new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                                            new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                }
+
+                #endregion Retorna informacion
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, CToken.Instance.SearchDetailInvalidToken(tokenRequest),
+               new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("api/User/GetManagerContactos")]
+        public async Task<HttpResponseMessage> GetManagerContactos(string Rol, string Identification, string Name, string Active)
+        {
+            if (string.IsNullOrEmpty(Rol) && string.IsNullOrEmpty(Identification))
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, string.Format(Utils.GetResourceMessages("M5"), "Tipo de usuario"),
+                                          new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+            }
+            var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
+            string User = string.Empty;
+            Users ObjectUser = new Users();
+            List<Carvajal.Turns.Domain.Entities.Users> ListObjectUser = new List<Carvajal.Turns.Domain.Entities.Users>();
+
+            if (CToken.Instance.ValidToken(tokenRequest))
+            {
+                #region Retorna informacion
+
+                User = CToken.Instance.GetUserToken(tokenRequest);
+                ObjectUser = CUsers.Instance.SearchUser(User);
+                if (!string.IsNullOrEmpty(User))
+                {
+                    if (string.IsNullOrEmpty(Active))
+                        ListObjectUser = CUsers.Instance.SearchUserCompany(ObjectUser, Rol, Identification, Name, null);
+                    else
+                        ListObjectUser = CUsers.Instance.SearchUserCompany(ObjectUser, Rol, Identification, Name, Active == "1" ? true : false);
+
+                    if (ListObjectUser != null)
+                    {
+                        if (ListObjectUser.Count > 0)
+                        {
+                            return Request.CreateResponse(HttpStatusCode.OK, ListObjectUser,
+                                                   new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M10"),
+                                                   new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M12"),
+                                             new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M12"),
+                                            new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
                 }
 
                 #endregion Retorna informacion

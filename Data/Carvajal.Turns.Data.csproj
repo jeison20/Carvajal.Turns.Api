@@ -64,6 +64,7 @@
     <Compile Include="Companies.cs" />
     <Compile Include="Countries.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="LinkedCentres.cs" />
     <Compile Include="ModelData.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="OptionsRol.cs" />

@@ -99,15 +99,15 @@ namespace Component
             string ValidToken = Encode(Token);
             Client Data = Instance.Client.FirstOrDefault(c => c.Token.Equals(Token));
             if (Data != null)
-                return "Not acces";
+                return "Not access";
             else if (Data.AllowedOrigin.Equals(ValidToken))
-                return "Not acces";
+                return "Not access";
             else if (Data.Active == false)
                 return "Session Inactive";
             else if (Data.RefreshTokenLifeTime < DateTime.Now)
                 return "el tiempo de su session ha caducado";
 
-            return "Invalid Acces";
+            return "Invalid Access";
         }
 
         public string GetUserToken(string Token)
@@ -126,7 +126,7 @@ namespace Component
             catch (Exception ex)
             {
                 LogComponent.WriteError("0", "0", "GetUserToken" + "BGM" + ex.Message);
-                return "";
+                return null;
             }
         }
 

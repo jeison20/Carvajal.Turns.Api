@@ -58,6 +58,7 @@
     <Compile Include="CCentres.cs" />
     <Compile Include="CClient.cs" />
     <Compile Include="CCompanies.cs" />
+    <Compile Include="CLinkedCentres.cs" />
     <Compile Include="COptions.cs" />
     <Compile Include="COptionsRol.cs" />
     <Compile Include="CRoles.cs" />
@@ -74,6 +75,10 @@
     <ProjectReference Include="..\Data\Carvajal.Turns.Data.csproj">
       <Project>{53f04bf3-a39f-45e7-96f5-ed2d8dac749d}</Project>
       <Name>Carvajal.Turns.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain\Carvajal.Turns.Domain.csproj">
+      <Project>{3e96d045-f6a3-4e37-9c96-12630db2b7ae}</Project>
+      <Name>Carvajal.Turns.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
