@@ -132,6 +132,9 @@
   <data name="M27" xml:space="preserve">
     <value>Los datos ingresados son inválidos o el usuario se encuentra inactivo</value>
   </data>
+  <data name="M28" xml:space="preserve">
+    <value>La contraseña no coincide con los requerimientos solicitados</value>
+  </data>
   <data name="M29" xml:space="preserve">
     <value>La nueva contraseña y su confirmación no coinciden.</value>
   </data>
@@ -144,10 +147,28 @@
   <data name="M34" xml:space="preserve">
     <value>La Nueva contraseña no puede ser igual a las cinco ultimas contraseñas registradas en el sistema</value>
   </data>
+  <data name="M36" xml:space="preserve">
+    <value>Se ha realizado la modificación del usuario de forma correcta</value>
+  </data>
+  <data name="M37" xml:space="preserve">
+    <value>No se puede realizar la modificación al usuario seleccionado</value>
+  </data>
+  <data name="M38" xml:space="preserve">
+    <value>El correo electrónico ingresado ya se encuentra registrado para otro usuario</value>
+  </data>
   <data name="M5" xml:space="preserve">
     <value>Debe ingresar {0}</value>
   </data>
+  <data name="M65" xml:space="preserve">
+    <value>El proceso no se terminó satisfactoriamente</value>
+  </data>
+  <data name="M66" xml:space="preserve">
+    <value>No se puede realizar la activación del usuario ya se encuentra registrado</value>
+  </data>
   <data name="M7" xml:space="preserve">
     <value>Usuario y/o Contraseña no válidos</value>
+  </data>
+  <data name="M99" xml:space="preserve">
+    <value>El usuario ha modificar se encuentra asociado ha otro comercio por favor valide la informacion suministrada</value>
   </data>
 </root>

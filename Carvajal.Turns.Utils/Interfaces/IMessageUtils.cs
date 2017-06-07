@@ -4,7 +4,7 @@
     {
         string GetTemplateMailRecoveryPasswor(string userName, string codeRecovery);
         string GetTemplateMailCreateMerchantInitial(string merchantName, string manufacturerName, string codeRecovery, string country);
-
+        string GetTemplateChangeMail(string UserName, string Password);
         string GetTemplateRequestToManufacturer(string manufacturerContact, string name);
         string GetTemplatePointofSalesCreate(string manufacturerContact, string name);
 

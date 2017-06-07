@@ -1,10 +1,44 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace Carvajal.Turns.Domain.Entities
+namespace Carvajal.Turns.Domain.Request
 {
-    public class Users
+    public class RequestCreateEvent
+    {
+        private string _User;
+        private string _NewPassword;
+        private string _ComfirmPassword;
+        private string _Code;
+
+        [JsonProperty(PropertyName = "usuario")]
+        public string User
+        {
+            get { return _User; }
+            set { _User = value; }
+        }
+
+        [JsonProperty(PropertyName = "nuevaclave")]
+        public string NewPassword
+        {
+            get { return _NewPassword; }
+            set { _NewPassword = value; }
+        }
+
+        [JsonProperty(PropertyName = "confirmacionclave")]
+        public string ComfirmPassword
+        {
+            get { return _ComfirmPassword; }
+            set { _ComfirmPassword = value; }
+        }
+
+        [JsonProperty(PropertyName = "codigoverificacion")]
+        public string Code
+        {
+            get { return _Code; }
+            set { _Code = value; }
+        }
+    }
+    public class RequestCreateEventUser
     {
         private string _PkIdentifier;
         private bool _ChangePasswordNextTime;
@@ -12,7 +46,6 @@ namespace Carvajal.Turns.Domain.Entities
         private string _Name;
         private DateTime? _LastAccess;
         private string _FkRole_Identifier;
-        private string _FkRole_Name;
         private string _Email;
         private bool _Status;
         private string _Phone;
@@ -20,8 +53,7 @@ namespace Carvajal.Turns.Domain.Entities
         private string _FkCompanies_Identifier;
         private string _FkCountries_Identifier;
         private string _Address;
-        private string _Center;
-        private string _UrlInitialRol;
+        private string _Centres;
 
         [JsonProperty(PropertyName = "Identifier")]
         public string PkIdentifier
@@ -30,14 +62,12 @@ namespace Carvajal.Turns.Domain.Entities
             set { _PkIdentifier = value; }
         }
 
-
         [JsonProperty(PropertyName = "ChangePasswordNextTime")]
         public bool ChangePasswordNextTime
         {
             get { return _ChangePasswordNextTime; }
             set { _ChangePasswordNextTime = value; }
         }
-
 
         [JsonProperty(PropertyName = "Password")]
         public string Password
@@ -46,14 +76,12 @@ namespace Carvajal.Turns.Domain.Entities
             set { _Password = value; }
         }
 
-
         [JsonProperty(PropertyName = "Name")]
         public string Name
         {
             get { return _Name; }
             set { _Name = value; }
         }
-
 
         [JsonProperty(PropertyName = "LastAccess")]
         public DateTime? LastAccess
@@ -62,29 +90,19 @@ namespace Carvajal.Turns.Domain.Entities
             set { _LastAccess = value; }
         }
 
-
-        [JsonProperty(PropertyName = "FkRole_Identifier")]
+        [JsonProperty(PropertyName = "Role")]
         public string FkRole_Identifier
         {
             get { return _FkRole_Identifier; }
             set { _FkRole_Identifier = value; }
         }
 
-        [JsonProperty(PropertyName = "FkRole_Name")]
-        public string FkRole_Name
-        {
-            get { return _FkRole_Name; }
-            set { _FkRole_Name = value; }
-        }
-
-        [Required]
         [JsonProperty(PropertyName = "Email")]
         public string Email
         {
             get { return _Email; }
             set { _Email = value; }
         }
-
 
         [JsonProperty(PropertyName = "Status")]
         public bool Status
@@ -93,14 +111,12 @@ namespace Carvajal.Turns.Domain.Entities
             set { _Status = value; }
         }
 
-
         [JsonProperty(PropertyName = "Phone")]
         public string Phone
         {
             get { return _Phone; }
             set { _Phone = value; }
         }
-
 
         [JsonProperty(PropertyName = "LastChangeDate")]
         public DateTime? LastChangeDate
@@ -109,20 +125,20 @@ namespace Carvajal.Turns.Domain.Entities
             set { _LastChangeDate = value; }
         }
 
-        [JsonProperty(PropertyName = "FkCompanies_Identifier")]
+        [JsonProperty(PropertyName = "Company")]
         public string FkCompanies_Identifier
         {
             get { return _FkCompanies_Identifier; }
             set { _FkCompanies_Identifier = value; }
         }
 
-
-        [JsonProperty(PropertyName = "FkCountries_Identifier")]
+        [JsonProperty(PropertyName = "Country")]
         public string FkCountries_Identifier
         {
             get { return _FkCountries_Identifier; }
             set { _FkCountries_Identifier = value; }
         }
+
         [JsonProperty(PropertyName = "Address")]
         public string Address
         {
@@ -130,21 +146,11 @@ namespace Carvajal.Turns.Domain.Entities
             set { _Address = value; }
         }
 
-        [JsonProperty(PropertyName = "Center")]
-        public string Center
+        [JsonProperty(PropertyName = "Centres")]
+        public string Centres
         {
-            get { return _Center; }
-            set { _Center = value; }
+            get { return _Centres; }
+            set { _Centres = value; }
         }
-
-        [JsonProperty(PropertyName = "UrlInitialRol")]
-        public string UrlInitialRol
-        {
-            get { return _UrlInitialRol; }
-            set { _UrlInitialRol = value; }
-        }
-
-        
-
     }
 }

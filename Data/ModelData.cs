@@ -107,15 +107,6 @@ namespace Data
                 .Property(e => e.Name)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Centres>()
-                .HasMany(e => e.Advices)
-                .WithOptional(e => e.Centres)
-                .HasForeignKey(e => e.FkCentres_Identifier);
-
-            modelBuilder.Entity<Centres>()
-                .HasMany(e => e.Exceptions)
-                .WithOptional(e => e.Centres)
-                .HasForeignKey(e => e.FkCentres_Identifier);
 
             modelBuilder.Entity<Countries>()
                 .Property(e => e.Code)
@@ -192,12 +183,7 @@ namespace Data
             modelBuilder.Entity<Timezones>()
                 .Property(e => e.Code)
                 .IsUnicode(false);
-
-            modelBuilder.Entity<Timezones>()
-                .HasMany(e => e.Centres)
-                .WithRequired(e => e.Timezones)
-                .HasForeignKey(e => e.FkTimezones_Identifier)
-                .WillCascadeOnDelete(false);
+              
 
             modelBuilder.Entity<Turns>()
                 .Property(e => e.FkUsers_Merchant_Identifier)

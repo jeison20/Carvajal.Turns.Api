@@ -94,6 +94,7 @@ namespace Carvajal.Turns.Api
                 }
             }
 
+            CToken.Instance.InactiveTokenVigentes(User);
             Client ObjectClient = new Client();
             ObjectClient.Token = accessToken;
             ObjectClient.Active = true;

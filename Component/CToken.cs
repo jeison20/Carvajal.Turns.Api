@@ -58,6 +58,8 @@ namespace Component
                 Client Client = SearchClient(Token, ValidaToken);
                 if (Client != null)
                 {
+                    Client.RefreshTokenLifeTime.Add(new TimeSpan(0, 5, 0));
+                    CClient.Instance.UpdateClient(Client);
                     return true;
                 }
                 else
@@ -84,6 +86,22 @@ namespace Component
             }
 
             return ValidOperation == true ? new Utils().GetResourceMessages("M17") : new Utils().GetResourceMessages("M12");
+        }
+
+        public void InactiveTokenVigentes(string User)
+        {
+            try
+            {
+                List<Client> Tokens = new List<Client>();
+                Tokens = Instance.Client.Where(c => c.User == User && c.Active == true).ToList();
+
+                foreach (var item in Tokens)
+                {
+                    item.Active = false;
+                    CClient.Instance.UpdateClient(item);
+                }
+            }
+            catch { }
         }
 
         public Client SearchClient(string Token, string ComfirmaToken)

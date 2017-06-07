@@ -56,6 +56,7 @@
     <Compile Include="Entities\MessageMailman.cs" />
     <Compile Include="Entities\MimeType.cs" />
     <Compile Include="Entities\PurchaseOrderDetail.cs" />
+    <Compile Include="Request\RequestCreateEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Users.cs" />
   </ItemGroup>

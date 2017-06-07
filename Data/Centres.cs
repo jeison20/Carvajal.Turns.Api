@@ -11,8 +11,7 @@ namespace Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Centres()
         {
-            Advices = new HashSet<Advices>();
-            Exceptions = new HashSet<Exceptions>();
+  
         }
 
         [Required]
@@ -53,7 +52,6 @@ namespace Data
 
         [Column(TypeName = "smalldatetime")]
         public DateTime? LastChangeDate { get; set; }
-
         public long FkTimezones_Identifier { get; set; }
         [StringLength(70)]
         public string AddressStreet { get; set; }
@@ -65,13 +63,6 @@ namespace Data
         public string Town { get; set; }
         [StringLength(9)]
         public string Region { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Advices> Advices { get; set; }
-
-        public virtual Timezones Timezones { get; set; }      
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Exceptions> Exceptions { get; set; }
+       
     }
 }

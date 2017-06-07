@@ -72,5 +72,18 @@ namespace Carvajal.Turns.Utils.Resources {
                 return ResourceManager.GetString("RestorePassword", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html&gt;
+        ///&lt;head&gt;
+        ///&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css&quot; integrity=&quot;sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u&quot; crossorigin=&quot;anonymous&quot;&gt;
+        ///&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css&quot; integrity=&quot;sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp&quot; crossorigin=&quot;anonymous&quot;&gt;
+        ///&lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootst [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SendUserPassword {
+            get {
+                return ResourceManager.GetString("SendUserPassword", resourceCulture);
+            }
+        }
     }
 }

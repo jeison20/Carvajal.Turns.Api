@@ -37,23 +37,23 @@ namespace WcfServiceLogin
                         var token = response.Content.ReadAsAsync<TokenModel>().Result;
                         var plainTextBytes = Encoding.UTF8.GetBytes(token.Token);
                         string TokenEnCoding = Convert.ToBase64String(plainTextBytes);
-                        return WebConfigurationManager.AppSettings["UrlSitio"] + "?id=" + "Barer " + TokenEnCoding;
+                        return WebConfigurationManager.AppSettings["UrlSitio"] + "?msg=" + "Barer " + TokenEnCoding;
                     }
                     else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     {
                         var token = response.Content.ReadAsAsync<TokenErrorModel>().Result;
-                        return WebConfigurationManager.AppSettings["UrlSitio"] + "MensajeError_" + token.ErrorDescription;
+                        return WebConfigurationManager.AppSettings["UrlSitio"] + "?msg=" + "MensajeError_" + token.ErrorDescription;
                     }
                     else
                     {
-                        return WebConfigurationManager.AppSettings["UrlSitio"] + "SinData";
+                        return WebConfigurationManager.AppSettings["UrlSitio"] + "?msg=" + "MensajeError_El proceso no se terminó satisfactoriamente. Intente nuevamente en unos segundos.";
                     }
 
                 }
             }
-            catch 
+            catch
             {
-                return WebConfigurationManager.AppSettings["UrlSitio"] + "MensajeError_" + "M12";
+                return WebConfigurationManager.AppSettings["UrlSitio"] + "?msg=" + "MensajeError_El proceso no se terminó satisfactoriamente. Intente nuevamente en unos segundos.";
             }
 
         }

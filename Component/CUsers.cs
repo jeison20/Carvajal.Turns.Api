@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Script.Serialization;
 
 namespace Component
 {
@@ -58,7 +59,29 @@ namespace Component
                 return null;
             }
         }
+        public bool ValidActiveUser(string IdentificationNumber,string Company)
+        {
+            List<Users> ObjectUser = new List<Users>();
+            try
+            {
+                ObjectUser = Instance.Users.Where(c => c.PkIdentifier == IdentificationNumber).ToList();
+                foreach (var item in ObjectUser)
+                {
+                   
+                }
 
+
+
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogComponent.WriteError("ErrorConsultBD", "0", "SearchUserMultiCenter" + "BGM" + ex.Message);
+
+                return false;
+            }
+        }
         public Users SearchUser(string User, string Password)
         {
             Users ObjectUser = new Users();
@@ -181,7 +204,7 @@ namespace Component
             List<Users> ObjectUser = new List<Users>();
             try
             {
-                if (User.FkRole_Identifier.Equals("FA"))
+                if (User.FkRole_Identifier.Equals(System.Configuration.ConfigurationManager.AppSettings["UserProvider"]))
                 {
                     ObjectUser = Instance.Users.Where(c => c.FkRole_Identifier == PKRol && c.FkCompanies_Identifier == User.FkCompanies_Identifier).ToList();
                 }
@@ -238,7 +261,7 @@ namespace Component
             }
         }
 
-        public List<Carvajal.Turns.Domain.Entities.Users> SearchUserCompany(Users User, string PKRol, string FilterIdentification, string FilterName, bool? Active)
+        public List<Carvajal.Turns.Domain.Entities.Users> SearchUserCompany(Users User, string PKRol, string FilterIdentification, string FilterName, bool? Active, string Center)
         {
             List<Users> ObjectUser = new List<Users>();
             try
@@ -247,24 +270,34 @@ namespace Component
                 List<Users> Users = new List<Users>();
                 if (Centres != null)
                 {
-                    foreach (var item in Centres)
+                    if (!string.IsNullOrEmpty(Center))
                     {
                         List<Users> ListUserCenter = new List<Users>();
-                        ListUserCenter = CLinkedCentres.Instance.SearchUsersForCenter(item.PkIdentifier);
-                        if (Users.Count == 0)
-                            Users = ListUserCenter;
-                        else if (Users.Count > 0 && ListUserCenter != null && ListUserCenter.Count > 0)
+                        ListUserCenter = CLinkedCentres.Instance.SearchUsersForCenter(Center);
+                        Users = ListUserCenter;
+                    }
+                    else
+                    {
+                        foreach (var item in Centres)
                         {
-                            Users.AddRange(ListUserCenter);
+                            List<Users> ListUserCenter = new List<Users>();
+                            ListUserCenter = CLinkedCentres.Instance.SearchUsersForCenter(item.PkIdentifier);
+                            if (Users.Count == 0)
+                                Users = ListUserCenter;
+                            else if (Users.Count > 0 && ListUserCenter != null && ListUserCenter.Count > 0)
+                            {
+                                Users.AddRange(ListUserCenter);
+                            }
                         }
                     }
 
                     if (Users.Count > 0)
                         ObjectUser = Users;
 
-                    if (!string.IsNullOrEmpty(PKRol))
+                    if (!string.IsNullOrEmpty(PKRol) && ObjectUser != null && ObjectUser.Count > 0)
+                    {
                         ObjectUser = ObjectUser.Where(c => c.FkRole_Identifier.Equals(PKRol)).ToList();
-
+                    }
                     if (!string.IsNullOrEmpty(FilterName) && ObjectUser != null && ObjectUser.Count > 0)
                     {
                         ObjectUser = ObjectUser.Where(c => c.Name.Trim().ToUpper().Contains(FilterName.Trim().ToUpper())).ToList();
@@ -283,6 +316,8 @@ namespace Component
 
                 if (ObjectUser != null)
                 {
+                    string ListCentres = string.Empty;
+
                     List<Carvajal.Turns.Domain.Entities.Users> ListUser = (from a in ObjectUser
                                                                            join r in Roles on a.FkRole_Identifier equals r.PkIdentifier
                                                                            select new Carvajal.Turns.Domain.Entities.Users
@@ -300,7 +335,7 @@ namespace Component
                                                                                FkCompanies_Identifier = a.FkCompanies_Identifier,
                                                                                FkCountries_Identifier = "",
                                                                                Address = a.Address,
-                                                                               Center = ""
+                                                                               Center = CLinkedCentres.Instance.SearchCentresForUserJson(a.PkIdentifier)
                                                                            }).ToList();
 
                     return ListUser;

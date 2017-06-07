@@ -32,7 +32,7 @@ namespace Component
             }
             catch (Exception ex)
             {
-                //LogManager.WriteLog("Error en el metodo SaveUser " + ex.Message);
+                LogComponent.WriteError("0", "0", "SaveRoles" + "BGM" + ex.Message);
                 return false;
             }
         }
@@ -45,6 +45,7 @@ namespace Component
             }
             catch (Exception ex)
             {
+                LogComponent.WriteError("0", "0", "SearchRol" + "BGM" + ex.Message);
                 return null;
             }
         }
@@ -53,12 +54,12 @@ namespace Component
         {
             try
             {
-                if (IdentificationRol.Equals("FA"))
+                if (IdentificationRol.Equals(System.Configuration.ConfigurationManager.AppSettings["UserProvider"]))
                     return Instance.Roles.Where(c => c.PkIdentifier == IdentificationRol).ToList();
-                else if (IdentificationRol.Equals("AC"))
-                    return Instance.Roles.Where(c => c.PkIdentifier == IdentificationRol || c.PkIdentifier == "OC" || c.PkIdentifier == "FA").ToList();
-                else if (IdentificationRol.Equals("OC"))
-                    return Instance.Roles.Where(c => c.PkIdentifier == IdentificationRol || c.PkIdentifier == "AC").ToList();
+                else if (IdentificationRol.Equals(System.Configuration.ConfigurationManager.AppSettings["UserAdmin"]))
+                    return Instance.Roles.Where(c => c.PkIdentifier == IdentificationRol || c.PkIdentifier == System.Configuration.ConfigurationManager.AppSettings["UserOperator"] || c.PkIdentifier == System.Configuration.ConfigurationManager.AppSettings["UserProvider"]).ToList();
+                else if (IdentificationRol.Equals(System.Configuration.ConfigurationManager.AppSettings["UserOperator"]))
+                    return Instance.Roles.Where(c => c.PkIdentifier == IdentificationRol || c.PkIdentifier == System.Configuration.ConfigurationManager.AppSettings["UserAdmin"]).ToList();
 
                 return Instance.Roles.Where(c => c.PkIdentifier == IdentificationRol).ToList();
             }

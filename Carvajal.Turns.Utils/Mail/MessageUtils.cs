@@ -23,6 +23,21 @@ namespace Carvajal.Turns.Utils.Mail
                 throw new Exception(ex.Message);
             }
         }
+        public string GetTemplateChangeMail(string UserName, string Password)
+        {
+            try
+            {
+                var messageTemplate = ResourceUtils.SendUserPassword;
+                messageTemplate = messageTemplate.Replace("<%UserName%>", UserName);
+                messageTemplate = messageTemplate.Replace("<%Password%>", Password);
+                return messageTemplate;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
         public string GetTemplateMailCreateMerchantInitial(string merchantName, string manufacturerName, string codeRecovery, string country)
         {

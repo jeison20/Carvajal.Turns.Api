@@ -106,6 +106,15 @@ namespace Carvajal.Turns.Utils.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La contraseña no coincide con los requerimientos solicitados.
+        /// </summary>
+        internal static string M28 {
+            get {
+                return ResourceManager.GetString("M28", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to La nueva contraseña y su confirmación no coinciden..
         /// </summary>
         internal static string M29 {
@@ -142,6 +151,33 @@ namespace Carvajal.Turns.Utils.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Se ha realizado la modificación del usuario de forma correcta.
+        /// </summary>
+        internal static string M36 {
+            get {
+                return ResourceManager.GetString("M36", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No se puede realizar la modificación al usuario seleccionado.
+        /// </summary>
+        internal static string M37 {
+            get {
+                return ResourceManager.GetString("M37", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El correo electrónico ingresado ya se encuentra registrado para otro usuario.
+        /// </summary>
+        internal static string M38 {
+            get {
+                return ResourceManager.GetString("M38", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debe ingresar {0}.
         /// </summary>
         internal static string M5 {
@@ -151,11 +187,38 @@ namespace Carvajal.Turns.Utils.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El proceso no se terminó satisfactoriamente.
+        /// </summary>
+        internal static string M65 {
+            get {
+                return ResourceManager.GetString("M65", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No se puede realizar la activación del usuario ya se encuentra registrado.
+        /// </summary>
+        internal static string M66 {
+            get {
+                return ResourceManager.GetString("M66", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Usuario y/o Contraseña no válidos.
         /// </summary>
         internal static string M7 {
             get {
                 return ResourceManager.GetString("M7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El usuario ha modificar se encuentra asociado ha otro comercio por favor valide la informacion suministrada.
+        /// </summary>
+        internal static string M99 {
+            get {
+                return ResourceManager.GetString("M99", resourceCulture);
             }
         }
     }
