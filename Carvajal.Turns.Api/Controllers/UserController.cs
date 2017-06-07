@@ -17,6 +17,7 @@ using System.Web.Http;
 
 namespace Carvajal.Turns.Api.Controllers
 {
+    [RoutePrefix("api/User")]
     public class UserController : ApiController
     {
         private IMessageUtils MessageUtils { get; set; }
@@ -39,11 +40,14 @@ namespace Carvajal.Turns.Api.Controllers
             }
         }
 
-        // GET: User
+        /// <summary>
+        /// Metodo encargado de validar que el token suministrado este activo y sea valido
+        /// </summary>
+        /// <returns>un objeto con informacion relacionada con el usuario autenticado</returns>
         [AllowAnonymous]
         [HttpGet]
-        [Route("api/User/Get_ValidaLogin")]
-        public async Task<HttpResponseMessage> Get_ValidaLogin()
+        [Route("ValidaLogin/Get")]
+        public async Task<HttpResponseMessage> ValidaLogin()
         {
             try
             {
@@ -51,11 +55,11 @@ namespace Carvajal.Turns.Api.Controllers
                 string User = string.Empty;
                 Users ObjectUser = new Users();
                 Domain.Entities.Users ObjectUserDomain = new Domain.Entities.Users();
-                if (CToken.Instance.ValidToken(tokenRequest, out User))
+                if (CClient.Instance.ValidToken(tokenRequest, out User))
                 {
                     if (!string.IsNullOrEmpty(User))
                     {
-                        ObjectUser = Component.CUsers.Instance.SearchUser(User);
+                        ObjectUser = CUsers.Instance.SearchUser(User);
 
                         if (!ObjectUser.Status)
                         {
@@ -116,7 +120,7 @@ namespace Carvajal.Turns.Api.Controllers
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, CToken.Instance.SearchDetailInvalidToken(tokenRequest),
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, CClient.Instance.SearchDetailInvalidToken(tokenRequest),
                    new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
                 }
 
@@ -134,17 +138,21 @@ namespace Carvajal.Turns.Api.Controllers
             }
         }
 
-        // GET: User
+        /// <summary>
+        /// Metodo encargado de retornar el menu correspondiente al rol solicitado
+        /// </summary>
+        /// <param name="Rol">rol al cual esta asociado un usuario</param>
+        /// <returns>Objeto de tipo Options con las diferentes opciones del menu </returns>
         [AllowAnonymous]
         [HttpGet]
-        [Route("api/User/Get_MenuForRol")]
-        public async Task<HttpResponseMessage> Get_MenuForRol(string Rol)
+        [Route("MenuForRol/Get")]
+        public async Task<HttpResponseMessage> MenuForRol(string Rol)
         {
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
             string User = string.Empty;
             List<Options> ObjectOptions = new List<Options>();
 
-            if (Component.CToken.Instance.ValidToken(tokenRequest, out User))
+            if (CClient.Instance.ValidToken(tokenRequest, out User))
             {
                 if (!string.IsNullOrEmpty(User))
                 {
@@ -160,7 +168,7 @@ namespace Carvajal.Turns.Api.Controllers
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, CToken.Instance.SearchDetailInvalidToken(tokenRequest),
+                return Request.CreateResponse(HttpStatusCode.BadRequest, CClient.Instance.SearchDetailInvalidToken(tokenRequest),
                new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
             }
 
@@ -172,10 +180,16 @@ namespace Carvajal.Turns.Api.Controllers
             #endregion Retorna informacion
         }
 
+        /// <summary>
+        /// Metodo encargado de realizar la solicitud de un nuevo password
+        /// </summary>
+        /// <param name="Email">Email del usuario el cual se le restaurara la clave </param>
+        /// <param name="PkUser"></param>
+        /// <returns>retorna un mensaje donde especifica el resultado de la operacion</returns>
         [AllowAnonymous]
         [HttpGet]
-        [Route("api/User/request_new_password")]
-        public async Task<HttpResponseMessage> Request_New_Password(string Email, string PkUser)
+        [Route("RequestNewPassword/Get")]
+        public async Task<HttpResponseMessage> RequestNewPassword(string Email, string PkUser)
         {
             var dato = System.Text.Encoding.UTF8.GetBytes(DateTime.Now.Day.ToString() + "/" + DateTime.Now.Month.ToString() + "/" + DateTime.Now.Year.ToString() + " " + DateTime.Now.Hour.ToString() + ":" + DateTime.Now.Minute.ToString() + ":" + DateTime.Now.Second.ToString());
             string codeRecovery = System.Convert.ToBase64String(dato);
@@ -245,10 +259,15 @@ namespace Carvajal.Turns.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Metodo encargado de restaurar la contraseña tras realizar el proceso de solicitud de restablecimiento
+        /// </summary>
+        /// <param name="Event">Objeto que provee de los parametros para realizar el restablecimiento de la contraseña  </param>
+        /// <returns>Mensaje con el resultado de la operacion</returns>
         [AllowAnonymous]
         [HttpPost]
-        [Route("api/User/Set_Restore_Password")]
-        public async Task<HttpResponseMessage> Set_Restore_Password([FromBody]Domain.Request.RequestCreateEvent Event)
+        [Route("RestorePassword/Post")]
+        public async Task<HttpResponseMessage> RestorePassword([FromBody]Domain.Request.RequestCreateEvent Event)
         {
             string User = Event.User;
             string NewPassword = Event.NewPassword;
@@ -263,7 +282,7 @@ namespace Carvajal.Turns.Api.Controllers
 
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
 
-            if (Component.CToken.Instance.ValidToken(tokenRequest))
+            if (CClient.Instance.ValidToken(tokenRequest))
             {
                 Users ObjectUser = new Users();
 
@@ -344,7 +363,7 @@ namespace Carvajal.Turns.Api.Controllers
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, CToken.Instance.SearchDetailInvalidToken(tokenRequest),
+                return Request.CreateResponse(HttpStatusCode.BadRequest, CClient.Instance.SearchDetailInvalidToken(tokenRequest),
                                         new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
             }
 
@@ -352,10 +371,15 @@ namespace Carvajal.Turns.Api.Controllers
                          new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
         }
 
+        /// <summary>
+        /// Metodo encargado de realizar el cambio de contraseña
+        /// </summary>
+        /// <param name="Event">Objeto que provee de los parametros para realizar el cambio de la contraseña</param>
+        /// <returns>Mensaje con el resultado de la operacion</returns>
         [AllowAnonymous]
         [HttpPost]
-        [Route("api/User/set_Change_password")]
-        public async Task<HttpResponseMessage> SetChangePassword([FromBody]Domain.Request.RequestCreateEvent Event)
+        [Route("ChangePassword/Post")]
+        public async Task<HttpResponseMessage> ChangePassword([FromBody]Domain.Request.RequestCreateEvent Event)
         {
             string User = Event.User;
             string NewPassword = Event.NewPassword;
@@ -370,7 +394,7 @@ namespace Carvajal.Turns.Api.Controllers
 
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
 
-            if (Component.CToken.Instance.ValidToken(tokenRequest))
+            if (CClient.Instance.ValidToken(tokenRequest))
             {
                 Users ObjectUser = new Users();
 
@@ -460,7 +484,7 @@ namespace Carvajal.Turns.Api.Controllers
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, CToken.Instance.SearchDetailInvalidToken(tokenRequest),
+                return Request.CreateResponse(HttpStatusCode.BadRequest, CClient.Instance.SearchDetailInvalidToken(tokenRequest),
                     new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
             }
 
@@ -468,19 +492,23 @@ namespace Carvajal.Turns.Api.Controllers
                          new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
         }
 
+        /// <summary>
+        /// Metodo que consulta la informacion del usuario logueado
+        /// </summary>
+        /// <returns>Objecto con la informacion pertinente al usuario</returns>
         [AllowAnonymous]
         [HttpGet]
-        [Route("api/User/Get_Info_User")]
-        public async Task<HttpResponseMessage> Get_Info_User()
+        [Route("InfoUser/Get")]
+        public async Task<HttpResponseMessage> InfoUser()
         {
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
             string User = string.Empty;
             Users ObjectUser = new Users();
 
             Domain.Entities.Users ObjectUserDomain = new Domain.Entities.Users();
-            if (CToken.Instance.ValidToken(tokenRequest))
+            if (CClient.Instance.ValidToken(tokenRequest))
             {
-                User = CToken.Instance.GetUserToken(tokenRequest);
+                User = CClient.Instance.GetUserToken(tokenRequest);
 
                 if (string.IsNullOrEmpty(User))
                 {
@@ -543,25 +571,30 @@ namespace Carvajal.Turns.Api.Controllers
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, CToken.Instance.SearchDetailInvalidToken(tokenRequest),
+                return Request.CreateResponse(HttpStatusCode.BadRequest, CClient.Instance.SearchDetailInvalidToken(tokenRequest),
                new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
             }
         }
 
+        /// <summary>
+        /// Metodo que consulta los tipos de usuario sobre los cuales el rol suministrado tiene permisos
+        /// </summary>
+        /// <param name="Role">Rol a consultar </param>
+        /// <returns>Object con una lista de roles </returns>
         [AllowAnonymous]
         [HttpGet]
-        [Route("api/User/GetTypeUserRol")]
-        public async Task<HttpResponseMessage> GetTypeUserRol(string Rol)
+        [Route("TypeUserRol/Get")]
+        public async Task<HttpResponseMessage> TypeUserRole(string Role)
         {
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
             string User = string.Empty;
             List<Roles> ListObjectRol = new List<Roles>();
 
-            if (CToken.Instance.ValidToken(tokenRequest))
+            if (CClient.Instance.ValidToken(tokenRequest))
             {
                 #region Retorna informacion
 
-                ListObjectRol = CRoles.Instance.SearchTypeUserRols(Rol);
+                ListObjectRol = CRoles.Instance.SearchTypeUserRols(Role);
                 if (ListObjectRol != null)
                 {
                     return Request.CreateResponse(HttpStatusCode.OK, ListObjectRol,
@@ -577,22 +610,26 @@ namespace Carvajal.Turns.Api.Controllers
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, CToken.Instance.SearchDetailInvalidToken(tokenRequest),
+                return Request.CreateResponse(HttpStatusCode.BadRequest, CClient.Instance.SearchDetailInvalidToken(tokenRequest),
                new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
             }
         }
 
+        /// <summary>
+        /// Metodo que consulta los centros asociados al usuario autenticado
+        /// </summary>
+        /// <returns>Objeto con una lista de LinkedCentres </returns>
         [AllowAnonymous]
         [HttpGet]
-        [Route("api/User/GetCentresForUser")]
-        public async Task<HttpResponseMessage> GetCentresForUser()
+        [Route("CentresForUser/Get")]
+        public async Task<HttpResponseMessage> CentresForUser()
         {
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
             string User = string.Empty;
-            User = CToken.Instance.GetUserToken(tokenRequest);
+            User = CClient.Instance.GetUserToken(tokenRequest);
             List<Centres> ListObjectCentres = new List<Centres>();
 
-            if (CToken.Instance.ValidToken(tokenRequest))
+            if (CClient.Instance.ValidToken(tokenRequest))
             {
                 #region Retorna informacion
 
@@ -614,26 +651,31 @@ namespace Carvajal.Turns.Api.Controllers
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, CToken.Instance.SearchDetailInvalidToken(tokenRequest),
+                return Request.CreateResponse(HttpStatusCode.BadRequest, CClient.Instance.SearchDetailInvalidToken(tokenRequest),
                new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
             }
         }
 
+        /// <summary>
+        /// Metodo que consulta los usuarios asociados a los centros a los que pertenece el usuario autenticado
+        /// </summary>
+        /// <param name="Rol">rol a consultar</param>
+        /// <returns>Objeto lista de usuarios asociados a los centros y con el tipo de rol suministrado </returns>
         [AllowAnonymous]
         [HttpGet]
-        [Route("api/User/GetContactosRol")]
-        public async Task<HttpResponseMessage> GetContactosRol(string Rol)
+        [Route("ContactsRole/Get")]
+        public async Task<HttpResponseMessage> ContactsRole(string Rol)
         {
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
             string User = string.Empty;
             Users ObjectUser = new Users();
             List<Users> ListObjectUser = new List<Users>();
 
-            if (CToken.Instance.ValidToken(tokenRequest))
+            if (CClient.Instance.ValidToken(tokenRequest))
             {
                 #region Retorna informacion
 
-                User = CToken.Instance.GetUserToken(tokenRequest);
+                User = CClient.Instance.GetUserToken(tokenRequest);
                 if (!string.IsNullOrEmpty(User))
                 {
                     ObjectUser = CUsers.Instance.SearchUser(User);
@@ -669,15 +711,24 @@ namespace Carvajal.Turns.Api.Controllers
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, CToken.Instance.SearchDetailInvalidToken(tokenRequest),
+                return Request.CreateResponse(HttpStatusCode.BadRequest, CClient.Instance.SearchDetailInvalidToken(tokenRequest),
                new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
             }
         }
 
+        /// <summary>
+        /// Metodo que consulta usuarios
+        /// </summary>
+        /// <param name="Rol">Rol al cual deben pertenecer los usuarios de la consulta </param>
+        /// <param name="Identification">numero de identificacion del usuario a buscar</param>
+        /// <param name="Name">nombre del usuario a consultar</param>
+        /// <param name="Active">estado del usuario que se desea buscar</param>
+        /// <param name="DeliveryCenter">centro al que pertenece el usuario a buscar</param>
+        /// <returns>Objecto con una lista de usuarios que cumplen con los filtros manejados</returns>
         [AllowAnonymous]
         [HttpGet]
-        [Route("api/User/GetManagerUsers")]
-        public async Task<HttpResponseMessage> GetManagerGetManagerUsers(string Rol, string Identification, string Name, string Active, string DeliveryCenter)
+        [Route("ManagerUsers/Get")]
+        public async Task<HttpResponseMessage> ManagerUsers(string Rol, string Identification, string Name, string Active, string DeliveryCenter)
         {
             if (string.IsNullOrEmpty(Rol) && string.IsNullOrEmpty(Identification))
             {
@@ -689,11 +740,11 @@ namespace Carvajal.Turns.Api.Controllers
             Users ObjectUser = new Users();
             List<Carvajal.Turns.Domain.Entities.Users> ListObjectUser = new List<Carvajal.Turns.Domain.Entities.Users>();
 
-            if (CToken.Instance.ValidToken(tokenRequest))
+            if (CClient.Instance.ValidToken(tokenRequest))
             {
                 #region Retorna informacion
 
-                User = CToken.Instance.GetUserToken(tokenRequest);
+                User = CClient.Instance.GetUserToken(tokenRequest);
                 ObjectUser = CUsers.Instance.SearchUser(User);
                 if (!string.IsNullOrEmpty(User))
                 {
@@ -731,14 +782,19 @@ namespace Carvajal.Turns.Api.Controllers
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, CToken.Instance.SearchDetailInvalidToken(tokenRequest),
+                return Request.CreateResponse(HttpStatusCode.BadRequest, CClient.Instance.SearchDetailInvalidToken(tokenRequest),
                new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
             }
         }
 
+        /// <summary>
+        /// Metodo que permite actualizar un usuario
+        /// </summary>
+        /// <param name="Event">Objeto que contiene toda la informacion que se puede modificar del usuario</param>
+        /// <returns>mensaje con el resultado de la operacion</returns>
         [AllowAnonymous]
         [HttpPost]
-        [Route("api/User/ModifyUsers")]
+        [Route("ModifyUsers/Post")]
         public async Task<HttpResponseMessage> ModifyUsers([FromBody]Domain.Request.RequestCreateEventUser Event)
         {
             try
@@ -746,14 +802,13 @@ namespace Carvajal.Turns.Api.Controllers
                 var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
                 string User = string.Empty;
                 Users AuthenticatedUser = new Users();
-                if (CToken.Instance.ValidToken(tokenRequest))
+                if (CClient.Instance.ValidToken(tokenRequest))
                 {
-                    User = CToken.Instance.GetUserToken(tokenRequest);
+                    User = CClient.Instance.GetUserToken(tokenRequest);
                     bool ValidSendEmail = false;
                     AuthenticatedUser = CUsers.Instance.SearchUser(User);
                     if (AuthenticatedUser.FkRole_Identifier.Equals(ConfigurationManager.AppSettings["UserAdmin"]))
                     {
-
                         if (string.IsNullOrEmpty(Event.PkIdentifier) || string.IsNullOrEmpty(Event.Name) || string.IsNullOrEmpty(Event.FkRole_Identifier) || string.IsNullOrEmpty(Event.Email))
                         {
                             string Field = string.Empty;
@@ -828,7 +883,7 @@ namespace Carvajal.Turns.Api.Controllers
                                         To = new Domain.Entities.Address(ObjectUser.Email),
                                         IsBodyHtml = true,
                                         Body = MessageUtils.GetTemplateChangeMail(ObjectUser.Name, ObjectUser.Password),
-                                        Subject = ConfigurationManager.AppSettings["subjectRecoveryPassword"],
+                                        Subject = ConfigurationManager.AppSettings["subjectChangeEmail"],
                                     };
 
                                     MailManService.Send(msg);
@@ -857,7 +912,175 @@ namespace Carvajal.Turns.Api.Controllers
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, CToken.Instance.SearchDetailInvalidToken(tokenRequest),
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, CClient.Instance.SearchDetailInvalidToken(tokenRequest),
+                        new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                }
+            }
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M12"),
+                                        new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+            }
+        }
+
+        /// <summary>
+        /// Metodo que permite crear un usuario
+        /// </summary>
+        /// <param name="Event">Objeto con la lista de parametros necesarios para la creacion del usuario</param>
+        /// <returns>Mensaje con el estado de la operacion</returns>
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("CreateUsers/Post")]
+        public async Task<HttpResponseMessage> CreateUsers([FromBody]Domain.Request.RequestCreateEventUser Event)
+        {
+            try
+            {
+                string Password = string.Empty;
+                Password = CUsers.Instance.GetRandomText(8);
+
+                var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
+                string User = string.Empty;
+                Users AuthenticatedUser = new Users();
+                if (CClient.Instance.ValidToken(tokenRequest))
+                {
+                    User = CClient.Instance.GetUserToken(tokenRequest);
+
+                    AuthenticatedUser = CUsers.Instance.SearchUser(User);
+                    if (AuthenticatedUser.FkRole_Identifier.Equals(ConfigurationManager.AppSettings["UserAdmin"]))
+                    {
+                        if (string.IsNullOrEmpty(Event.PkIdentifier) || string.IsNullOrEmpty(Event.Name) || string.IsNullOrEmpty(Event.FkRole_Identifier) || string.IsNullOrEmpty(Event.Email))
+                        {
+                            string Field = string.Empty;
+
+                            if (string.IsNullOrEmpty(Event.PkIdentifier))
+                                Field = "Identifier";
+
+                            if (string.IsNullOrEmpty(Event.Name))
+                            {
+                                if (string.IsNullOrEmpty(Field))
+                                    Field = "Name";
+                                else
+                                    Field = Field + "," + "Name";
+                            }
+
+                            if (string.IsNullOrEmpty(Event.FkRole_Identifier))
+                            {
+                                if (string.IsNullOrEmpty(Field))
+                                    Field = "Type of user";
+                                else
+                                    Field = Field + "," + "Type of user";
+                            }
+                            if (string.IsNullOrEmpty(Event.Email))
+                            {
+                                if (string.IsNullOrEmpty(Field))
+                                    Field = "Email";
+                                else
+                                    Field = Field + "," + "Email";
+                            }
+
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, string.Format(Utils.GetResourceMessages("M5"), Field),
+                                   new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                        }
+
+                        Users ObjectUser = new Users();
+                        ObjectUser = CUsers.Instance.SearchUser(Event.PkIdentifier);
+
+                        if (ObjectUser != null && ObjectUser.Status == true)
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M40"),
+                                                                       new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                        }
+
+                        if (ObjectUser != null)
+                        {
+                            if (ObjectUser.Email.Trim().ToUpper() != Event.Email.Trim().ToUpper())
+                            {
+                                if (CUsers.Instance.ValidUniqueUserEmail(Event.Email, Event.PkIdentifier))
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M38"),
+                                                                 new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                                }
+                            }
+
+                            if (CLinkedCentres.Instance.UpdateCenterUser(Event.PkIdentifier, Event.Centres, Event.FkRole_Identifier))
+                            {
+                                ObjectUser.Password = Password;
+                                ObjectUser.Name = Event.Name;
+                                ObjectUser.FkRole_Identifier = Event.FkRole_Identifier;
+                                ObjectUser.Email = Event.Email;
+                                ObjectUser.Status = Event.Status;
+                                ObjectUser.FkCompanies_Identifier = AuthenticatedUser.FkCompanies_Identifier;
+
+                                CUsers.Instance.SaveChanges();
+
+                                var msg = new Domain.Entities.Message
+                                {
+                                    From = new Domain.Entities.Address(ConfigurationManager.AppSettings["emailFrom"]),
+                                    To = new Domain.Entities.Address(ObjectUser.Email),
+                                    IsBodyHtml = true,
+                                    Body = MessageUtils.GetTemplateChangeMail(ObjectUser.Name, ObjectUser.Password),
+                                    Subject = ConfigurationManager.AppSettings["subjectRecoveryPassword"],
+                                };
+
+                                MailManService.Send(msg);
+
+                                return Request.CreateResponse(HttpStatusCode.OK, Utils.GetResourceMessages("M36"),
+                                  new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M65"),
+                                  new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                            }
+                        }
+                        else
+                        {
+                            if (CUsers.Instance.ValidUniqueUserEmail(Event.Email, Event.PkIdentifier))
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M38"),
+                                                             new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                            }
+
+                            if (CLinkedCentres.Instance.UpdateCenterUser(Event.PkIdentifier, Event.Centres, Event.FkRole_Identifier))
+                            {
+                                if (CUsers.Instance.SaveUser(new Users { PkIdentifier = Event.PkIdentifier, ChangePasswordNextTime = true, Password = Password, Name = Event.Name, LastAccess = null, FkRole_Identifier = Event.FkRole_Identifier, Email = Event.Email, Phone = Event.Phone, LastChangeDate = DateTime.Now, FkCompanies_Identifier = AuthenticatedUser.FkCompanies_Identifier, FkCountries_Identifier = AuthenticatedUser.FkCountries_Identifier }))
+                                {
+                                    var msg = new Domain.Entities.Message
+                                    {
+                                        From = new Domain.Entities.Address(ConfigurationManager.AppSettings["emailFrom"]),
+                                        To = new Domain.Entities.Address(ObjectUser.Email),
+                                        IsBodyHtml = true,
+                                        Body = MessageUtils.GetTemplateChangeMail(ObjectUser.Name, ObjectUser.Password),
+                                        Subject = ConfigurationManager.AppSettings["subjectRecoveryPassword"],
+                                    };
+
+                                    MailManService.Send(msg);
+
+                                    return Request.CreateResponse(HttpStatusCode.OK, Utils.GetResourceMessages("M39"),
+                                     new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M12"),
+                                    new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M12"),
+                                   new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "User without permissions",
+                               new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, CClient.Instance.SearchDetailInvalidToken(tokenRequest),
                         new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
                 }
             }

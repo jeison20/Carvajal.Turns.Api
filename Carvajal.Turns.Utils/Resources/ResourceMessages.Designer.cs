@@ -178,6 +178,24 @@ namespace Carvajal.Turns.Utils.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Se ha realizado la creación del usuario de forma correcta.
+        /// </summary>
+        internal static string M39 {
+            get {
+                return ResourceManager.GetString("M39", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El número de identificación ingresado ya se encuentra registrado.
+        /// </summary>
+        internal static string M40 {
+            get {
+                return ResourceManager.GetString("M40", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debe ingresar {0}.
         /// </summary>
         internal static string M5 {

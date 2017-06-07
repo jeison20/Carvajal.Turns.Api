@@ -63,7 +63,6 @@
     <Compile Include="COptions.cs" />
     <Compile Include="COptionsRol.cs" />
     <Compile Include="CRoles.cs" />
-    <Compile Include="CToken.cs" />
     <Compile Include="CUsers.cs" />
     <Compile Include="LogComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

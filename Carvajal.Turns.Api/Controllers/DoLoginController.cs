@@ -16,7 +16,7 @@ namespace Carvajal.Turns.Api.Controllers
             }
             else
             {
-                if (CToken.Instance.ValidToken(msg))
+                if (CClient.Instance.ValidToken(msg))
                 {
                     Url = (ConfigurationManager.AppSettings["UrlSitio"] + "?msg=" + msg);
                 }

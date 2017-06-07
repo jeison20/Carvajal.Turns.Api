@@ -156,6 +156,12 @@
   <data name="M38" xml:space="preserve">
     <value>El correo electrónico ingresado ya se encuentra registrado para otro usuario</value>
   </data>
+  <data name="M39" xml:space="preserve">
+    <value>Se ha realizado la creación del usuario de forma correcta</value>
+  </data>
+  <data name="M40" xml:space="preserve">
+    <value>El número de identificación ingresado ya se encuentra registrado</value>
+  </data>
   <data name="M5" xml:space="preserve">
     <value>Debe ingresar {0}</value>
   </data>

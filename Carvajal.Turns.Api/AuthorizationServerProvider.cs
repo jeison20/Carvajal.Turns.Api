@@ -94,13 +94,13 @@ namespace Carvajal.Turns.Api
                 }
             }
 
-            CToken.Instance.InactiveTokenVigentes(User);
+            CClient.Instance.InactiveTokenVigentes(User);
             Client ObjectClient = new Client();
             ObjectClient.Token = accessToken;
             ObjectClient.Active = true;
             ObjectClient.User = User;
             ObjectClient.RefreshTokenLifeTime = DateTime.Now.AddMinutes(20);
-            ObjectClient.AllowedOrigin = CToken.Instance.Encode(ObjectClient.Token);
+            ObjectClient.AllowedOrigin = CClient.Instance.Encode(ObjectClient.Token);
             CClient.Instance.SaveClient(ObjectClient);
         }
 

@@ -389,16 +389,20 @@ namespace Carvajal.Turns.Api.Controllers
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Metodo que cierra la session inhabilitando el token suministrado al usuario.
+        /// </summary>
+        /// <returns>Retorna un mensaje con el resultado de la operacion </returns>
         [AllowAnonymous]
         [HttpGet]
-        [Route("Logout")]
+        [Route("Logout/Post")]
         public async Task<HttpResponseMessage> Logout()
         {
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
             bool ValidOperation = false;
 
-            string Message = CToken.Instance.InactiveToken(tokenRequest, out ValidOperation);
+            string Message = CClient.Instance.InactiveToken(tokenRequest, out ValidOperation);
 
             if (ValidOperation)
             {

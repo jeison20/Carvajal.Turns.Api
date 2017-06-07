@@ -19,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebService", "WebService", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carvajal.Turns.Services", "WcfServiceLogin\WcfServiceLogin\Carvajal.Turns.Services.csproj", "{6FE251F3-4C92-42E5-89C6-C6D329A0DB2D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTest", "UnitTest", "{5782D31E-F6D4-4D94-8321-0B38C065003B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carvajal.Turns.Unit.Test", "Carvajal.Turns.Unit.Test\Carvajal.Turns.Unit.Test.csproj", "{81241B4D-D72C-49A3-A6A4-36A06B981114}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,10 @@ Global
 		{6FE251F3-4C92-42E5-89C6-C6D329A0DB2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FE251F3-4C92-42E5-89C6-C6D329A0DB2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FE251F3-4C92-42E5-89C6-C6D329A0DB2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81241B4D-D72C-49A3-A6A4-36A06B981114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81241B4D-D72C-49A3-A6A4-36A06B981114}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81241B4D-D72C-49A3-A6A4-36A06B981114}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81241B4D-D72C-49A3-A6A4-36A06B981114}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,5 +67,6 @@ Global
 		{3E96D045-F6A3-4E37-9C96-12630DB2B7AE} = {E5290C45-C07C-4DA4-A11E-9ED80085C60D}
 		{897964BE-0FC6-449B-B492-908B95270E83} = {E5290C45-C07C-4DA4-A11E-9ED80085C60D}
 		{6FE251F3-4C92-42E5-89C6-C6D329A0DB2D} = {BCDAAECE-A49E-44C1-AE03-E8854BAE4325}
+		{81241B4D-D72C-49A3-A6A4-36A06B981114} = {5782D31E-F6D4-4D94-8321-0B38C065003B}
 	EndGlobalSection
 EndGlobal

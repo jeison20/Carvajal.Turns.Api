@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Script.Serialization;
 
 namespace Component
 {
@@ -59,7 +58,8 @@ namespace Component
                 return null;
             }
         }
-        public bool ValidActiveUser(string IdentificationNumber,string Company)
+
+        public bool ValidActiveUser(string IdentificationNumber, string Company)
         {
             List<Users> ObjectUser = new List<Users>();
             try
@@ -67,11 +67,7 @@ namespace Component
                 ObjectUser = Instance.Users.Where(c => c.PkIdentifier == IdentificationNumber).ToList();
                 foreach (var item in ObjectUser)
                 {
-                   
                 }
-
-
-
 
                 return true;
             }
@@ -82,6 +78,7 @@ namespace Component
                 return false;
             }
         }
+
         public Users SearchUser(string User, string Password)
         {
             Users ObjectUser = new Users();
@@ -117,6 +114,34 @@ namespace Component
 
                 return null;
             }
+        }
+
+        public bool ValidUniqueUserEmail(string Email, string Identification)
+        {
+            Users ObjectUser = new Users();
+            try
+            {
+                ObjectUser = Instance.Users.FirstOrDefault(c => c.Email == (Email) && c.PkIdentifier != Identification);
+                if (ObjectUser != null)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                LogComponent.WriteError("ErrorConsultBD", "0", "ValidUniqueUserEmail" + "BGM" + ex.Message);
+
+                return false;
+            }
+        }
+
+        public string GetRandomText(int LengthText)
+        {
+            var dato = System.Text.Encoding.UTF8.GetBytes(DateTime.Now.Day.ToString() + "/" + DateTime.Now.Month.ToString() + "/" + DateTime.Now.Year.ToString() + " " + DateTime.Now.Hour.ToString() + ":" + DateTime.Now.Minute.ToString() + ":" + DateTime.Now.Second.ToString());
+            string Text = Convert.ToBase64String(dato);
+            if (Text.Length > LengthText)
+                Text = Text.Substring(Text.Length - LengthText);
+            return Text;
         }
 
         public bool DeleteUser(Users User)
