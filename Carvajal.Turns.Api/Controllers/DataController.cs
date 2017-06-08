@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Web.Http;
@@ -12,7 +13,7 @@ namespace Carvajal.Turns.Api.Controllers
         [Route("api/data/forall")]
         public IHttpActionResult Get()
         {
-            return Ok("__"+DateTime.Now.ToString());
+            return Ok("__"+DateTime.Now.ToString(CultureInfo.InvariantCulture));
         }
 
         [AllowAnonymous]
@@ -20,7 +21,7 @@ namespace Carvajal.Turns.Api.Controllers
         [Route("api/data/authenticat")]
         public IHttpActionResult GetUser(string id)
         {
-            return Ok(DateTime.Now.ToString()+"fg");
+            return Ok(DateTime.Now.ToString(CultureInfo.InvariantCulture));
         }
 
         [Authorize]

@@ -9,7 +9,7 @@ namespace Carvajal.Turns.Api.Controllers
         // GET: DoLogin
         public ActionResult Index(string msg)
         {
-            string Url = string.Empty;
+            string Url;
             if (!msg.Contains("Barer "))
             {
                 Url = (ConfigurationManager.AppSettings["UrlSitio"] + "?msg=" + msg);

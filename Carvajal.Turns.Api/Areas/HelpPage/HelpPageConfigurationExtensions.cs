@@ -1,3 +1,5 @@
+using Carvajal.Turns.Api.Areas.HelpPage.ModelDescriptions;
+using Carvajal.Turns.Api.Areas.HelpPage.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,15 +13,11 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Description;
-using Carvajal.Turns.Api.Areas.HelpPage.ModelDescriptions;
-using Carvajal.Turns.Api.Areas.HelpPage.Models;
 
 namespace Carvajal.Turns.Api.Areas.HelpPage
 {
     public static class HelpPageConfigurationExtensions
     {
-        private const string ApiModelPrefix = "MS_HelpPageApiModel_";
-
         /// <summary>
         /// Sets the documentation provider for help page.
         /// </summary>
@@ -218,6 +216,7 @@ namespace Carvajal.Turns.Api.Areas.HelpPage
         /// </returns>
         public static HelpPageApiModel GetHelpPageApiModel(this HttpConfiguration config, string apiDescriptionId)
         {
+            string ApiModelPrefix = "MS_HelpPageApiModel_";
             object model;
             string modelId = ApiModelPrefix + apiDescriptionId;
             if (!config.Properties.TryGetValue(modelId, out model))
@@ -269,33 +268,10 @@ namespace Carvajal.Turns.Api.Areas.HelpPage
                         complexTypeDescription = typeDescription as ComplexTypeModelDescription;
                     }
 
-                    // Example:
-                    // [TypeConverter(typeof(PointConverter))]
-                    // public class Point
-                    // {
-                    //     public Point(int x, int y)
-                    //     {
-                    //         X = x;
-                    //         Y = y;
-                    //     }
-                    //     public int X { get; set; }
-                    //     public int Y { get; set; }
-                    // }
-                    // Class Point is bindable with a TypeConverter, so Point will be added to UriParameters collection.
-                    // 
-                    // public class Point
-                    // {
-                    //     public int X { get; set; }
-                    //     public int Y { get; set; }
-                    // }
-                    // Regular complex class Point will have properties X and Y added to UriParameters collection.
-                    if (complexTypeDescription != null
-                        && !IsBindableWithTypeConverter(parameterType))
+                    if (complexTypeDescription != null && !IsBindableWithTypeConverter(parameterType))
                     {
                         foreach (ParameterDescription uriParameter in complexTypeDescription.Properties)
-                        {
                             apiModel.UriParameters.Add(uriParameter);
-                        }
                     }
                     else if (parameterDescriptor != null)
                     {
@@ -303,15 +279,12 @@ namespace Carvajal.Turns.Api.Areas.HelpPage
                             AddParameterDescription(apiModel, apiParameter, typeDescription);
 
                         if (!parameterDescriptor.IsOptional)
-                        {
                             uriParameter.Annotations.Add(new ParameterAnnotation() { Documentation = "Required" });
-                        }
 
                         object defaultValue = parameterDescriptor.DefaultValue;
                         if (defaultValue != null)
-                        {
                             uriParameter.Annotations.Add(new ParameterAnnotation() { Documentation = "Default value is " + Convert.ToString(defaultValue, CultureInfo.InvariantCulture) });
-                        }
+
                     }
                     else
                     {

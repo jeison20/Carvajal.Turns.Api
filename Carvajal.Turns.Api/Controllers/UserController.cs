@@ -150,8 +150,8 @@ namespace Carvajal.Turns.Api.Controllers
         public async Task<HttpResponseMessage> MenuForRol(string Rol)
         {
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
-            string User = string.Empty;
-            List<Options> ObjectOptions = new List<Options>();
+            string User;
+            List<Options> ObjectOptions;
 
             if (CClient.Instance.ValidToken(tokenRequest, out User))
             {
@@ -285,7 +285,7 @@ namespace Carvajal.Turns.Api.Controllers
 
             if (CClient.Instance.ValidToken(tokenRequest))
             {
-                Users ObjectUser = new Users();
+                Users ObjectUser;
 
                 Regex rex = new Regex("^[A-Z0-9 a-z]*$");
 
@@ -503,8 +503,8 @@ namespace Carvajal.Turns.Api.Controllers
         public async Task<HttpResponseMessage> InfoUser()
         {
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
-            string User = string.Empty;
-            Users ObjectUser = new Users();
+            string User;
+            Users ObjectUser;
 
             Domain.Entities.Users ObjectUserDomain = new Domain.Entities.Users();
             if (CClient.Instance.ValidToken(tokenRequest))
@@ -542,7 +542,7 @@ namespace Carvajal.Turns.Api.Controllers
                     }
                     else
                     {
-                        List<Centres> ObjectListCentres = new List<Centres>();
+                        List<Centres> ObjectListCentres;
                         ObjectListCentres = CLinkedCentres.Instance.SearchCentresForUser(ObjectUser.PkIdentifier);
                         if (ObjectListCentres != null)
                         {
@@ -559,7 +559,7 @@ namespace Carvajal.Turns.Api.Controllers
 
                     #region Retorna informacion
 
-                    return Request.CreateResponse<Carvajal.Turns.Domain.Entities.Users>(HttpStatusCode.OK, ObjectUserDomain,
+                    return Request.CreateResponse(HttpStatusCode.OK, ObjectUserDomain,
                             new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
 
                     #endregion Retorna informacion
@@ -588,8 +588,8 @@ namespace Carvajal.Turns.Api.Controllers
         public async Task<HttpResponseMessage> TypeUserRole(string Role)
         {
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
-            string User = string.Empty;
-            List<Roles> ListObjectRol = new List<Roles>();
+           
+            List<Roles> ListObjectRol;
 
             if (CClient.Instance.ValidToken(tokenRequest))
             {
@@ -626,7 +626,7 @@ namespace Carvajal.Turns.Api.Controllers
         public async Task<HttpResponseMessage> CentresForUser()
         {
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
-            string User = string.Empty;
+            string User;
             User = CClient.Instance.GetUserToken(tokenRequest);
             List<Centres> ListObjectCentres = new List<Centres>();
 
@@ -668,9 +668,9 @@ namespace Carvajal.Turns.Api.Controllers
         public async Task<HttpResponseMessage> ContactsRole(string Rol)
         {
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
-            string User = string.Empty;
-            Users ObjectUser = new Users();
-            List<Users> ListObjectUser = new List<Users>();
+            string User;
+            Users ObjectUser;
+            List<Users> ListObjectUser;
 
             if (CClient.Instance.ValidToken(tokenRequest))
             {
@@ -737,9 +737,9 @@ namespace Carvajal.Turns.Api.Controllers
                                           new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
             }
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
-            string User = string.Empty;
-            Users ObjectUser = new Users();
-            List<Carvajal.Turns.Domain.Entities.Users> ListObjectUser = new List<Carvajal.Turns.Domain.Entities.Users>();
+            string User;
+            Users ObjectUser;
+            List<Domain.Entities.Users> ListObjectUser;
 
             if (CClient.Instance.ValidToken(tokenRequest))
             {

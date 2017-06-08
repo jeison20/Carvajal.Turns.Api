@@ -868,7 +868,7 @@ if (typeof jQuery === 'undefined') {
 
     if (e.which == 38 && index > 0)                 index--         // up
     if (e.which == 40 && index < $items.length - 1) index++         // down
-    if (!~index)                                    index = 0
+    if (!index)                                    index = 0
 
     $items.eq(index).trigger('focus')
   }
@@ -1678,7 +1678,7 @@ if (typeof jQuery === 'undefined') {
   }
 
   Tooltip.prototype.getUID = function (prefix) {
-    do prefix += ~~(Math.random() * 1000000)
+    do prefix += --(Math.random() * 1000000)
     while (document.getElementById(prefix))
     return prefix
   }
@@ -1947,8 +1947,7 @@ if (typeof jQuery === 'undefined') {
 
         return ($href
           && $href.length
-          && $href.is(':visible')
-          && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+          && $href.is(':visible')) || null
       })
       .sort(function (a, b) { return a[0] - b[0] })
       .each(function () {

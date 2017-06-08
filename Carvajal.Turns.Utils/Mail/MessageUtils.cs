@@ -25,7 +25,7 @@ namespace Carvajal.Turns.Utils.Mail
             }
             catch (Exception ex)
             {
-                //TODO pendiente implementar log para control de execpciones
+                // TODO: Pendiente implementar log para control de execpciones.
                 return null;
             }
         }
@@ -47,7 +47,7 @@ namespace Carvajal.Turns.Utils.Mail
             }
             catch (Exception ex)
             {
-                //TODO pendiente implementar log para control de execpciones
+                // TODO: Pendiente implementar log para control de execpciones.
                 return null;
             }
         }
@@ -76,6 +76,7 @@ namespace Carvajal.Turns.Utils.Mail
             }
             catch (Exception ex)
             {
+                // TODO: Pendiente implementar log para control de execpciones.
                 return null;
             }
         }

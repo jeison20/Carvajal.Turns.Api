@@ -41,7 +41,7 @@ namespace Carvajal.Turns.Api.Controllers
         {
             get
             {
-                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return  Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {
@@ -65,17 +65,6 @@ namespace Carvajal.Turns.Api.Controllers
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
             };
         }
-
-        // POST api/Account/Logout
-        //[Route("Logout")]
-        //public IHttpActionResult Logout()
-        //{
-        //    Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
-        //    var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
-        //    return Request.CreateResponse(HttpStatusCode.OK, "Error, Acceso denegado  ",
-        //           new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-        //    return Ok();
-        //}
 
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
         [Route("ManageInfo")]
@@ -400,7 +389,7 @@ namespace Carvajal.Turns.Api.Controllers
         {
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
-            bool ValidOperation = false;
+            bool ValidOperation;
 
             string Message = CClient.Instance.InactiveToken(tokenRequest, out ValidOperation);
 

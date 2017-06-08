@@ -240,31 +240,28 @@ namespace Component
             List<Users> ObjectUser = new List<Users>();
             try
             {
+                List<Centres> Centres = CLinkedCentres.Instance.SearchCentresForUser(User.PkIdentifier);
                 if (User.FkRole_Identifier.Equals(System.Configuration.ConfigurationManager.AppSettings["UserProvider"]))
                 {
                     ObjectUser = Instance.Users.Where(c => c.FkRole_Identifier == PKRol && c.FkCompanies_Identifier == User.FkCompanies_Identifier).ToList();
                 }
-                else
+                else if (Centres != null)
                 {
-                    List<Centres> Centres = CLinkedCentres.Instance.SearchCentresForUser(User.PkIdentifier);
                     List<Users> Users = new List<Users>();
-                    if (Centres != null)
+                    foreach (var item in Centres)
                     {
-                        foreach (var item in Centres)
-                        {
-                            List<Users> ListUserCenter = new List<Users>();
-                            ListUserCenter = CLinkedCentres.Instance.SearchUsersForCenter(item.PkIdentifier);
-                            if (Users.Count == 0)
-                                Users = ListUserCenter;
-                            else if (Users.Count > 0 && ListUserCenter != null && ListUserCenter.Count > 0)
-                                Users.AddRange(ListUserCenter);
-                        }
-
-                        if (Users.Count > 0)
-                            ObjectUser = Users;
-
-                        ObjectUser = ObjectUser.Where(c => c.FkRole_Identifier.Equals(PKRol)).ToList();
+                        List<Users> ListUserCenter = new List<Users>();
+                        ListUserCenter = CLinkedCentres.Instance.SearchUsersForCenter(item.PkIdentifier);
+                        if (Users.Count == 0)
+                            Users = ListUserCenter;
+                        else if (Users.Count > 0 && ListUserCenter != null && ListUserCenter.Count > 0)
+                            Users.AddRange(ListUserCenter);
                     }
+
+                    if (Users.Count > 0)
+                        ObjectUser = Users;
+
+                    ObjectUser = ObjectUser.Where(c => c.FkRole_Identifier.Equals(PKRol)).ToList();
                 }
 
                 if (ObjectUser != null)
@@ -318,9 +315,7 @@ namespace Component
                         {
                             List<Users> ListUserCenter = new List<Users>();
                             ListUserCenter = CLinkedCentres.Instance.SearchUsersForCenter(item.PkIdentifier);
-                            if (Users.Count == 0)
-                                Users = ListUserCenter;
-                            else if (Users.Count > 0 && ListUserCenter != null && ListUserCenter.Count > 0)
+                            if (ListUserCenter != null && ListUserCenter.Count > 0)
                                 Users.AddRange(ListUserCenter);
                         }
                     }

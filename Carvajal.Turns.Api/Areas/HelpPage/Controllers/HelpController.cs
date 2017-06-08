@@ -11,8 +11,6 @@ namespace Carvajal.Turns.Api.Areas.HelpPage.Controllers
     /// </summary>
     public class HelpController : Controller
     {
-        private const string ErrorViewName = "Error";
-
         public HelpController()
             : this(GlobalConfiguration.Configuration)
         {
@@ -33,6 +31,7 @@ namespace Carvajal.Turns.Api.Areas.HelpPage.Controllers
 
         public ActionResult Api(string apiId)
         {
+            string ErrorViewName = "Error";
             if (!String.IsNullOrEmpty(apiId))
             {
                 HelpPageApiModel apiModel = Configuration.GetHelpPageApiModel(apiId);
@@ -47,6 +46,7 @@ namespace Carvajal.Turns.Api.Areas.HelpPage.Controllers
 
         public ActionResult ResourceModel(string modelName)
         {
+            string ErrorViewName = "Error";
             if (!String.IsNullOrEmpty(modelName))
             {
                 ModelDescriptionGenerator modelDescriptionGenerator = Configuration.GetModelDescriptionGenerator();
