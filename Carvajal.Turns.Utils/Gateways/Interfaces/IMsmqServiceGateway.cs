@@ -1,13 +1,12 @@
 ﻿using Carvajal.Turns.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Carvajal.Turns.Utils.Gateways.Interfaces
 {
+    /// <summary>
+    /// Metodo utilizado para el envio de correos
+    /// </summary>
+    /// <param name="msgMailMan">Objeto tipo Message que contiene los parametros necesarios para el envio del correo </param>
     public interface IMsmqServiceGateway
     {
         void Send(Message msgMailMan);

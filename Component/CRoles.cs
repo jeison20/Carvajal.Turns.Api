@@ -22,6 +22,11 @@ namespace Component
             }
         }
 
+        /// <summary>
+        /// Metodo que permite la creacion de un rol
+        /// </summary>
+        /// <param name="Rol">Objeto rol con la informacion con la que se creara el rol</param>
+        /// <returns>true si el proceso fue exitoso caso contrario false</returns>
         public bool SaveRoles(Roles Rol)
         {
             try
@@ -37,6 +42,11 @@ namespace Component
             }
         }
 
+        /// <summary>
+        ///  Metodo que permite la busqueda de un rol
+        /// </summary>
+        /// <param name="IdentificationRol">pk id del rol ha consultar</param>
+        /// <returns>Elemento Rol con la informacion en caso contrario null</returns>
         public Roles SearchRol(string IdentificationRol)
         {
             try
@@ -50,6 +60,11 @@ namespace Component
             }
         }
 
+        /// <summary>
+        /// Metodo para buscar los tipos de usuarios segun rol
+        /// </summary>
+        /// <param name="IdentificationRol">pk identificacion del rol</param>
+        /// <returns>Lista de Roles con la informacion pertinente si el proceso fue exitoso en caso contrario null</returns>
         public List<Roles> SearchTypeUserRols(string IdentificationRol)
         {
             try

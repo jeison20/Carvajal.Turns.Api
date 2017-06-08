@@ -7,6 +7,7 @@ using Spring.Context.Support;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -253,7 +254,7 @@ namespace Carvajal.Turns.Api.Controllers
             }
             catch (Exception ex)
             {
-                LogComponent.WriteError("ErrorConsultBD", "0", "SearchUserCompany" + "BGM" + ex.Message);
+                LogComponent.WriteError("0", "0", "SearchUserCompany" + "BGM" + ex.Message);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M12"),
                      new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
             }
@@ -495,7 +496,7 @@ namespace Carvajal.Turns.Api.Controllers
         /// <summary>
         /// Metodo que consulta la informacion del usuario logueado
         /// </summary>
-        /// <returns>Objecto con la informacion pertinente al usuario</returns>
+        /// <returns>Objeto con la informacion pertinente al usuario</returns>
         [AllowAnonymous]
         [HttpGet]
         [Route("InfoUser/Get")]
@@ -517,7 +518,7 @@ namespace Carvajal.Turns.Api.Controllers
                 }
 
                 ObjectUser = CUsers.Instance.SearchUser(User);
-                if (ObjectUser == null)
+                if (ObjectUser != null)
                 {
                     Companies ObjectCompany = CCompanies.Instance.SearchCompany(ObjectUser.FkCompanies_Identifier);
 
@@ -724,7 +725,7 @@ namespace Carvajal.Turns.Api.Controllers
         /// <param name="Name">nombre del usuario a consultar</param>
         /// <param name="Active">estado del usuario que se desea buscar</param>
         /// <param name="DeliveryCenter">centro al que pertenece el usuario a buscar</param>
-        /// <returns>Objecto con una lista de usuarios que cumplen con los filtros manejados</returns>
+        /// <returns>Objeto con una lista de usuarios que cumplen con los filtros manejados</returns>
         [AllowAnonymous]
         [HttpGet]
         [Route("ManagerUsers/Get")]
@@ -853,7 +854,7 @@ namespace Carvajal.Turns.Api.Controllers
                                 return Request.CreateResponse(HttpStatusCode.BadRequest, Utils.GetResourceMessages("M99"),
                                                                        new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
                             }
-                            if (ObjectUser.Email.Trim().ToUpper() != Event.Email.Trim().ToUpper())
+                            if (ObjectUser.Email.Trim().ToUpper(CultureInfo.InvariantCulture) != Event.Email.Trim().ToUpper(CultureInfo.InvariantCulture))
                             {
                                 ValidSendEmail = true;
                                 Users UserEmail = CUsers.Instance.SearchUserEmail(Event.Email);
@@ -993,7 +994,7 @@ namespace Carvajal.Turns.Api.Controllers
 
                         if (ObjectUser != null)
                         {
-                            if (ObjectUser.Email.Trim().ToUpper() != Event.Email.Trim().ToUpper())
+                            if (ObjectUser.Email.Trim().ToUpper(CultureInfo.InvariantCulture) != Event.Email.Trim().ToUpper(CultureInfo.InvariantCulture))
                             {
                                 if (CUsers.Instance.ValidUniqueUserEmail(Event.Email, Event.PkIdentifier))
                                 {

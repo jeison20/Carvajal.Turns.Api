@@ -2,12 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Component
 {
-    class COptions : ModelData
+    internal class COptions : ModelData
     {
         private static COptions _Instance = new COptions();
 
@@ -24,6 +22,11 @@ namespace Component
             }
         }
 
+        /// <summary>
+        /// Metodo que permite crear una opcion de menu
+        /// </summary>
+        /// <param name="Option">Objeto Options con la informacion necesaria para la creacion</param>
+        /// <returns>true si el proceso fue exitoso en caso contrario false</returns>
         public bool SaveOption(Options Option)
         {
             try
@@ -34,11 +37,16 @@ namespace Component
             }
             catch (Exception ex)
             {
-                //LogManager.WriteLog("Error en el metodo SaveUser " + ex.Message);
+                LogComponent.WriteError("0", "0", "SaveOption" + "BGM" + ex.Message);
                 return false;
             }
         }
 
+        /// <summary>
+        /// Metodo para consultar un item de la tabla options
+        /// </summary>
+        /// <param name="IdOption">Pk id de la opcion ha consultar</param>
+        /// <returns>Object Options  si el proceso fue exitoso en caso contrario null</returns>
         public Options SearchOption(int IdOption)
         {
             try
@@ -47,10 +55,16 @@ namespace Component
             }
             catch (Exception ex)
             {
+                LogComponent.WriteError("0", "0", "SearchOption" + "BGM" + ex.Message);
                 return null;
             }
         }
 
+        /// <summary>
+        /// Metodo para consultar una lista options  
+        /// </summary>
+        /// <param name="Options">lista de opciones a buscar </param>
+        /// <returns>Object list Options si el proceso fue exitoso en caso contrario null.</returns>
         public List<Options> SearchOptions(List<decimal> Options)
         {
             try
@@ -59,9 +73,16 @@ namespace Component
             }
             catch (Exception ex)
             {
+                LogComponent.WriteError("0", "0", "SearchOptions" + "BGM" + ex.Message);
                 return null;
             }
         }
+
+        /// <summary>
+        /// Metodo para actualizar una opcion especifica
+        /// </summary>
+        /// <param name="Option">Objeto Options con la informacion correspondiente a la opcion</param>
+        /// <returns>true si elproceso fue exitoso en caso contrario false</returns>
         public bool UpdateOption(Options Option)
         {
             try
@@ -81,6 +102,7 @@ namespace Component
             }
             catch (Exception ex)
             {
+                LogComponent.WriteError("0", "0", "UpdateOption" + "BGM" + ex.Message);
                 return false;
             }
         }

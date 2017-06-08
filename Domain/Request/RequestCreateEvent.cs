@@ -3,6 +3,10 @@ using System;
 
 namespace Carvajal.Turns.Domain.Request
 {
+
+    /// <summary>
+    /// Clase utilizada para estructurar la respuesta en un servicio
+    /// </summary>
     public class RequestCreateEvent
     {
         private string _User;
@@ -38,6 +42,10 @@ namespace Carvajal.Turns.Domain.Request
             set { _Code = value; }
         }
     }
+
+    /// <summary>
+    /// Clase utilizada para estructurar la respuesta en un servicio
+    /// </summary>
     public class RequestCreateEventUser
     {
         private string _PkIdentifier;

@@ -9,7 +9,10 @@ namespace Carvajal.Turns.Utils.Gateways
 {
     public class MsmqMailManServiceGateway : MessageQueueGatewaySupport, IMsmqServiceGateway
     {
-
+        /// <summary>
+        /// Metodo utilizado para el envio de correos
+        /// </summary>
+        /// <param name="msgMailMan">Objeto tipo Message que contiene los parametros necesarios para el envio del correo </param>
         public void Send(Domain.Entities.Message msgMailMan)
         {
             MessageQueue messageQueue = null;

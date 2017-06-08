@@ -5,17 +5,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Component
 {
     public class CClient : ModelData
     {
         private static CClient _Instance = new CClient();
+
         public CClient()
       : base()
         {
         }
+
         public static CClient Instance
         {
             get
@@ -23,6 +24,12 @@ namespace Component
                 return _Instance;
             }
         }
+
+        /// <summary>
+        /// Metodo que guarda un objecto Client
+        /// </summary>
+        /// <param name="ObjectClient">objecto Client que se va ha crear</param>
+        /// <returns>Retorna true si la operacion fue exitosa en caso contrario false</returns>
         public bool SaveClient(Client ObjectClient)
         {
             try
@@ -33,21 +40,34 @@ namespace Component
             }
             catch (Exception ex)
             {
-                LogComponent.WriteError(ObjectClient.User, "0", "" + "BGM" + ex.Message);
+                LogComponent.WriteError(ObjectClient.User, "0", "SaveClient" + "BGM" + ex.Message);
                 return false;
             }
         }
+
+        /// <summary>
+        /// Metodo que busca un objecto Cliente
+        /// </summary>
+        /// <param name="Token">token suministrado para buscarlo entre los tokens almacenados</param>
+        /// <returns>Retorna un objecto Client si la busqueda fue exitosa en caso contrario null</returns>
         public Client SearchClient(string Token)
         {
             try
             {
-                return Instance.Client.FirstOrDefault(c => c.Token == Token && c.Active == true && c.RefreshTokenLifeTime > DateTime.Now);
+                return Instance.Client.FirstOrDefault(c => c.Token == Token && c.Active && c.RefreshTokenLifeTime > DateTime.Now);
             }
             catch (Exception ex)
             {
+                LogComponent.WriteError("0", "0", "SearchClient" + "BGM" + ex.Message);
                 return null;
             }
         }
+
+        /// <summary>
+        /// Metodo encargado de elminar un objeto Client de la bd
+        /// </summary>
+        /// <param name="ObjectClient">objeto Client que se desea eliminar de la bd</param>
+        /// <returns>Retorna true si la operacion fue exitosa en caso contrario false</returns>
         public bool DeleteClient(Client ObjectClient)
         {
             try
@@ -60,11 +80,18 @@ namespace Component
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                LogComponent.WriteError("0", "0", "DeleteClient" + "BGM" + ex.Message);
                 return false;
             }
         }
+
+        /// <summary>
+        /// Metodo encargado de actualizar un objeto Client de la bd
+        /// </summary>
+        /// <param name="ObjectClient">objeto Client que se desea actualizar de la bd</param>
+        /// <returns>Retorna true si la operacion fue exitosa en caso contrario false</returns>
         public bool UpdateClient(Client ObjectClient)
         {
             try
@@ -83,12 +110,19 @@ namespace Component
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                LogComponent.WriteError("0", "0", "UpdateClient" + "BGM" + ex.Message);
                 return false;
             }
         }
 
+        /// <summary>
+        /// Metodo encargado de identificar si el token es valido
+        /// </summary>
+        /// <param name="Token">token suministrado</param>
+        /// <param name="User">usuario dueño del token</param>
+        /// <returns>Retorna true si la operacion fue exitosa en caso contrario false</returns>
         public bool ValidToken(string Token, out string User)
         {
             try
@@ -105,13 +139,19 @@ namespace Component
                 else
                     return false;
             }
-            catch
+            catch (Exception ex)
             {
+                LogComponent.WriteError("0", "0", "ValidToken" + "BGM" + ex.Message);
                 User = "";
                 return false;
             }
         }
 
+        /// <summary>
+        /// Metodo encargado de identificar si el token es valido
+        /// </summary>
+        /// <param name="Token">token suministrado</param>
+        /// <returns>Retorna true si la operacion fue exitosa en caso contrario false</returns>
         public bool ValidToken(string Token)
         {
             try
@@ -123,75 +163,136 @@ namespace Component
                 if (Client != null)
                 {
                     Client.RefreshTokenLifeTime = (DateTime.Now.AddMinutes(5));
-                    CClient.Instance.UpdateClient(Client);
+                    Instance.UpdateClient(Client);
                     return true;
                 }
                 else
                     return false;
             }
-            catch
+            catch (Exception ex)
             {
+                LogComponent.WriteError("0", "0", "ValidToken" + "BGM" + ex.Message);
                 return false;
             }
         }
 
+        /// <summary>
+        /// Metodo encargado de desactivar el ultimo token activo
+        /// </summary>
+        /// <param name="token">token suministrado</param>
+        /// <param name="ValidOperation">Retorna true si la operacion fue exitosa en caso contrario false</param>
+        /// <returns>mensaje con el resultado de la operacion</returns>
         public string InactiveToken(string token, out bool ValidOperation)
         {
-            token = DecodeToken(token);
-            List<Client> Tokens = new List<Client>();
-            Tokens = Instance.Client.Where(c => c.Token == token && c.Active == true).ToList();
-            ValidOperation = false;
-            if (Tokens.Count == 0)
-                return "No active session was found";
-            foreach (var item in Tokens)
+            try
             {
-                item.Active = false;
-                ValidOperation = CClient.Instance.UpdateClient(item);
-            }
+                token = DecodeToken(token);
+                List<Client> Tokens = new List<Client>();
+                Tokens = Instance.Client.Where(c => c.Token == token && c.Active).ToList();
+                ValidOperation = false;
+                if (Tokens.Count == 0)
+                    return "No active session was found";
+                foreach (var item in Tokens)
+                {
+                    item.Active = false;
+                    ValidOperation = Instance.UpdateClient(item);
+                }
 
-            return ValidOperation == true ? new Utils().GetResourceMessages("M17") : new Utils().GetResourceMessages("M12");
+                return ValidOperation ? new Utils().GetResourceMessages("M17") : new Utils().GetResourceMessages("M12");
+            }
+            catch (Exception ex)
+            {
+                LogComponent.WriteError("0", "0", "InactiveToken" + "BGM" + ex.Message);
+                ValidOperation = false;
+                return new Utils().GetResourceMessages("M12");
+            }
         }
 
+        /// <summary>
+        ///Metodo que busca multiples tokens activos
+        /// </summary>
+        /// <param name="User">usuario asociado al token</param>
         public void InactiveTokenVigentes(string User)
         {
             try
             {
                 List<Client> Tokens = new List<Client>();
-                Tokens = Instance.Client.Where(c => c.User == User && c.Active == true).ToList();
+                Tokens = Instance.Client.Where(c => c.User == User && c.Active).ToList();
 
                 foreach (var item in Tokens)
                 {
                     item.Active = false;
-                    CClient.Instance.UpdateClient(item);
+                    Instance.UpdateClient(item);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                LogComponent.WriteError("0", "0", "InactiveTokenVigentes" + "BGM" + ex.Message);
+            }
         }
 
+        /// <summary>
+        ///Metodo que realiza la busqueda de un token vigente activo
+        /// </summary>
+        /// <param name="Token">Codigo token suministrado</param>
+        /// <param name="ComfirmaToken">Cadena de validacion de integridad del token suministrado </param>
+        /// <returns>Object Client si la busqueda fue exitosa en caso contrario null</returns>
         public Client SearchClient(string Token, string ComfirmaToken)
         {
-            Client Dato = Instance.Client.FirstOrDefault(c => c.Token.Equals(Token) && c.AllowedOrigin.Equals(ComfirmaToken) && c.Active == true && c.RefreshTokenLifeTime > DateTime.Now);
-            return Dato;
+            try
+            {
+                Client Dato = Instance.Client.FirstOrDefault(c => c.Token.Equals(Token) && c.AllowedOrigin.Equals(ComfirmaToken) && c.Active && c.RefreshTokenLifeTime > DateTime.Now);
+                return Dato;
+            }
+            catch (Exception ex)
+            {
+                LogComponent.WriteError("0", "0", "SearchClient" + "BGM" + ex.Message);
+                return null;
+            }
         }
 
+        /// <summary>
+        ///Metodo que retorna la razon por la cual el token suministrado no paso la validacion
+        /// </summary>
+        /// <param name="Token">Codigo token suministrado</param>
+        /// <returns>Mensaje especificando la razon por la que el token no es valido </returns>
         public string SearchDetailInvalidToken(string Token)
         {
-            Token = DecodeToken(Token);
+            try
+            {
+                Token = DecodeToken(Token);
 
-            string ValidToken = Encode(Token);
-            Client Data = Instance.Client.FirstOrDefault(c => c.Token.Equals(Token));
-            if (Data != null)
-                return "Not access";
-            else if (Data.AllowedOrigin.Equals(ValidToken))
-                return "Not access";
-            else if (Data.Active == false)
-                return "Session Inactive";
-            else if (Data.RefreshTokenLifeTime < DateTime.Now)
-                return "el tiempo de su session ha caducado";
+                string ValidToken = Encode(Token);
+                Client Data = Instance.Client.FirstOrDefault(c => c.Token.Equals(Token));
+                if (Data == null)
+                {
+                    LogComponent.WriteLog("0", "0", "SearchDetailInvalidToken" + "BGM" + "Token no encontrado en la bd");
+                    return "Not access";
+                }
+                else if (Data.AllowedOrigin.Equals(ValidToken))
+                {
+                    LogComponent.WriteLog("0", "0", "SearchDetailInvalidToken" + "BGM" + "Token modificado la cadena de verificacion no coincide");
+                    return "Not access";
+                }
+                else if (!Data.Active)
+                    return "Session Inactiva";
+                else if (Data.RefreshTokenLifeTime < DateTime.Now)
+                    return "el tiempo de su session ha caducado";
 
-            return "Invalid Access";
+                return "Invalid Access";
+            }
+            catch (Exception ex)
+            {
+                LogComponent.WriteError("0", "0", "SearchDetailInvalidToken" + "BGM" + ex.Message);
+                return new Utils().GetResourceMessages("M12");
+            }
         }
 
+        /// <summary>
+        ///Metodo encargado de buscar el usuario asociado a un token especifico
+        /// </summary>
+        /// <param name="Token">Codigo token suministrado</param>
+        /// <returns>en caso exitoso identificacion del usuario asociado al token en caso contrario null o vacio.</returns>
         public string GetUserToken(string Token)
         {
             try
@@ -212,6 +313,11 @@ namespace Component
             }
         }
 
+        /// <summary>
+        ///Metodo que genera codigo de autenticidad del token generado
+        /// </summary>
+        /// <param name="Token">Codigo token suministrado</param>
+        /// <returns>Codigo autenticidad del token suministrado</returns>
         public string Encode(string Token)
         {
             MD5 md5 = MD5CryptoServiceProvider.Create();
@@ -223,6 +329,11 @@ namespace Component
             return sb.ToString();
         }
 
+        /// <summary>
+        ///Metodo que decodifica el codigo token suministrado
+        /// </summary>
+        /// <param name="Token">Codigo token suministrado</param>
+        /// <returns>Codigo token decodificado </returns>
         private string DecodeToken(string Token)
         {
             var base64EncodedBytes = Convert.FromBase64String(Token);

@@ -93,12 +93,8 @@
     <Compile Include="Data\MessagePurchaseOrder.cs">
       <DependentUpon>MessagePurchaseOrder.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Gateways\Interfaces\IMsmqFileMassiveServiceGateway.cs" />
-    <Compile Include="Gateways\Interfaces\IMsmqPurchaseOrderServiceGateway.cs" />
     <Compile Include="Gateways\Interfaces\IMsmqServiceGateway.cs" />
-    <Compile Include="Gateways\MsmqFileMassiveServiceGateway.cs" />
     <Compile Include="Gateways\MsmqMailManServiceGateway.cs" />
-    <Compile Include="Gateways\MsmqPurchaseOrderServiceGateway.cs" />
     <Compile Include="Interfaces\IMessageUtils.cs" />
     <Compile Include="Interfaces\IUtils.cs" />
     <Compile Include="Mail\MessageUtils.cs" />

@@ -22,6 +22,11 @@ namespace Component
             }
         }
 
+        /// <summary>
+        /// Metodo para guardar un centro 
+        /// </summary>
+        /// <param name="Center">Objeto tipo Centres</param>
+        /// <returns>true si el guarde fue exitoso en caso contrario false</returns>
         public bool SaveCenter(Centres Center)
         {
             try
@@ -36,7 +41,11 @@ namespace Component
                 return false;
             }
         }
-
+        /// <summary>
+        /// Metodo para buscar un centro por identificacion
+        /// </summary>
+        /// <param name="IdentificationNumber">identificacion del centro</param>
+        /// <returns>Objeto tipo Centres si el proceso fue exitoso en caso contrario un null</returns>
         public Centres SearchCenter(string IdentificationNumber)
         {
             Centres ObjectCenter = new Centres();
@@ -52,6 +61,12 @@ namespace Component
                 return null;
             }
         }
+
+        /// <summary>
+        ///  Metodo para buscar un centro por usuario responsable
+        /// </summary>
+        /// <param name="IdentificationNumberUser">identificacion del usuario responsable a consultar</param>
+        /// <returns>Objeto tipo Centres si el proceso fue exitoso en caso contrario un null</returns>
         public Centres SearchCenterResponsibleUser(string IdentificationNumberUser)
         {
             Centres ObjectCenter = new Centres();
@@ -67,7 +82,12 @@ namespace Component
                 return null;
             }
         }
-       
+
+        /// <summary>
+        /// Metodo para eliminar un centro
+        /// </summary>
+        /// <param name="Center">Objeto tipo Centres correspondiente al centro que se va ha eliminar</param>
+        /// <returns>true si el proceso fue exitoso en caso contrario false</returns>
         public bool DeleteCenter(Centres Center)
         {
             try
@@ -87,6 +107,11 @@ namespace Component
             }
         }
 
+        /// <summary>
+        /// Metodo que actualiza un centro
+        /// </summary>
+        /// <param name="Center">Objeto tipo Centres correspondiente al centro que se va ha actualizar</param>
+        /// <returns>true si el proceso fue exitoso en caso contrario false</returns>
         public bool UpdateCenter(Centres Center)
         {
             Centres UpdateCenter = new Centres();

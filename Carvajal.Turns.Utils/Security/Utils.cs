@@ -11,14 +11,11 @@ namespace Carvajal.Turns.Utils.Security
 {
     public class Utils : IUtils
     {
-        private Dictionary<string, string> _RegexByCountry;
-
-        public Dictionary<string, string> RegexByCountry
-        {
-            get { return _RegexByCountry; }
-            set { _RegexByCountry = value; }
-        }
-
+        /// <summary>
+        /// Metodo que genera una cadena de caracteres aleatoria
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns>retorna una cadena de caracteres aleatoria</returns>
         public string RandomString(int length)
         {
             var random = new Random();
@@ -27,33 +24,11 @@ namespace Carvajal.Turns.Utils.Security
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        public Guid GenereteUuid()
-        {
-            return Guid.NewGuid();
-        }
-
-        public object GetResponseMockup(string fileName)
-        {
-            try
-            {
-                var jsonMockup = new object();
-                TextReader mockupReader = new StreamReader(@Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Mockup\\" + fileName));
-                var mockup = mockupReader.ReadToEnd();
-                var serializer = new JavaScriptSerializer();
-                var obje = serializer.Deserialize(mockup, jsonMockup.GetType());
-                return obje;
-            }
-            catch (Exception)
-            {
-                throw new Exception();
-            }
-        }
-
-        public string GetRegexByCountry(string country)
-        {
-            return RegexByCountry.ContainsKey(country) ? RegexByCountry[country] : null;
-        }
-
+        /// <summary>
+        /// metodo que consulta un recurso y retorna el valor
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns>una cadena de caracteres con el valor del recurso consultado</returns>
         public string GetResourceMessages(string Key)
         {
             return ResourceMessages.ResourceManager.GetString(Key);

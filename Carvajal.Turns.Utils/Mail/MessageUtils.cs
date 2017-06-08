@@ -1,13 +1,19 @@
-﻿using System;
+﻿using Carvajal.Turns.Utils.Interfaces;
+using Carvajal.Turns.Utils.Resources;
+using System;
 using System.Configuration;
 using System.IO;
-using Carvajal.Turns.Utils.Resources;
-using Carvajal.Turns.Utils.Interfaces;
 
 namespace Carvajal.Turns.Utils.Mail
 {
     public class MessageUtils : IMessageUtils
     {
+        /// <summary>
+        /// Metodo que realiza la busqueda de la plantilla html MailRecoveryPasswor para la recuperacion de contraseña almacenada en un recurso para su uso en un email
+        /// </summary>
+        /// <param name="userName">nombre del usuario </param>
+        /// <param name="codeRecovery">codigo de recuperacion de contraseña</param>
+        /// <returns>retorna un html</returns>
         public string GetTemplateMailRecoveryPasswor(string userName, string codeRecovery)
         {
             try
@@ -16,13 +22,20 @@ namespace Carvajal.Turns.Utils.Mail
                 messageTemplate = messageTemplate.Replace("<%UserName%>", userName);
                 messageTemplate = messageTemplate.Replace("<%CodeRecovery%>", codeRecovery);
                 return messageTemplate;
-
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                //TODO pendiente implementar log para control de execpciones
+                return null;
             }
         }
+
+        /// <summary>
+        /// Metodo que realiza la busqueda de la plantilla html ChangeMail para recordatorio de usuario y contraseña al cambiar de email almacenada en un recurso para su uso en un email
+        /// </summary>
+        /// <param name="UserName">usuario identificacion</param>
+        /// <param name="Password">contraseña almacenada</param>
+        /// <returns>Retorna un html</returns>
         public string GetTemplateChangeMail(string UserName, string Password)
         {
             try
@@ -31,14 +44,22 @@ namespace Carvajal.Turns.Utils.Mail
                 messageTemplate = messageTemplate.Replace("<%UserName%>", UserName);
                 messageTemplate = messageTemplate.Replace("<%Password%>", Password);
                 return messageTemplate;
-
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                //TODO pendiente implementar log para control de execpciones
+                return null;
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="merchantName"></param>
+        /// <param name="manufacturerName"></param>
+        /// <param name="codeRecovery"></param>
+        /// <param name="country"></param>
+        /// <returns></returns>
         public string GetTemplateMailCreateMerchantInitial(string merchantName, string manufacturerName, string codeRecovery, string country)
         {
             try
@@ -52,87 +73,10 @@ namespace Carvajal.Turns.Utils.Mail
                 messageTemplate = messageTemplate.Replace("<%UrlMerchantInitial%>", string.Format(ConfigurationManager.AppSettings["UrlMerchantInitial"], codeRecovery, country));
                 messageTemplate = messageTemplate.Replace("<%UUID%>", codeRecovery.ToString());
                 return messageTemplate;
-
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
-            }
-        }
-        public string GetTemplateRequestToManufacturer(string manufacturerContact, string name)
-        {
-            try
-            {
-                TextReader template = new StreamReader(@Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates\\SendRequesttoManufacturer.txt"));
-
-                var messageTemplate = template.ReadToEnd();
-                template.Close();
-                messageTemplate = messageTemplate.Replace("<%Manufacturer%>", manufacturerContact);
-                messageTemplate = messageTemplate.Replace("<%Merchant%>", name);
-                return messageTemplate;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public string GetTemplatePointofSalesCreate(string manufacturerContact, string name)
-        {
-            try
-            {
-                TextReader template = new StreamReader(@Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates\\PointofSalesCreate.txt"));
-
-                var messageTemplate = template.ReadToEnd();
-                template.Close();
-                messageTemplate = messageTemplate.Replace("<%contacto%>", manufacturerContact);
-                messageTemplate = messageTemplate.Replace("<%empresa%>", name);
-                return messageTemplate;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-
-        public string GetTemplatePointofSalesVsUserCreate(string name)
-        {
-            try
-            {
-                TextReader template = new StreamReader(@Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates\\PointofSalesVsUserCreate.txt"));
-
-                var messageTemplate = template.ReadToEnd();
-                template.Close();
-                messageTemplate = messageTemplate.Replace("<%UserName%>", name);
-                return messageTemplate;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-
-        public string GetTemplateRequestToMerchant(string manufacturer, string merchant)
-        {
-            try
-            {
-                TextReader template = new StreamReader(@Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates\\SendRequestToMerchant.txt"));
-
-                var messageTemplate = template.ReadToEnd();
-                template.Close();
-                messageTemplate = messageTemplate.Replace("<%manufacturer%>", manufacturer);
-                messageTemplate = messageTemplate.Replace("<%merchant%>", merchant);
-                return messageTemplate;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
+                return null;
             }
         }
     }

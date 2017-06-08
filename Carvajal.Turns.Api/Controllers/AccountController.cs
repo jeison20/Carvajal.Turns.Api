@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
-using System.Web.Http.ModelBinding;
+﻿using Carvajal.Turns.Api.Models;
+using Carvajal.Turns.Api.Providers;
+using Carvajal.Turns.Api.Results;
+using Component;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using Carvajal.Turns.Api.Models;
-using Carvajal.Turns.Api.Providers;
-using Carvajal.Turns.Api.Results;
+using System;
+using System.Collections.Generic;
 using System.Net;
-using Component;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Http;
 
 namespace Carvajal.Turns.Api.Controllers
 {
@@ -25,7 +24,6 @@ namespace Carvajal.Turns.Api.Controllers
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
-        private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
 
         public AccountController()
@@ -83,6 +81,7 @@ namespace Carvajal.Turns.Api.Controllers
         [Route("ManageInfo")]
         public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
         {
+            string LocalLoginProvider = "Local";
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             if (user == null)
@@ -200,6 +199,7 @@ namespace Carvajal.Turns.Api.Controllers
         [Route("RemoveLogin")]
         public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
         {
+            string LocalLoginProvider = "Local";
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -413,14 +413,7 @@ namespace Carvajal.Turns.Api.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest, Message,
                                     new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-
             }
-
-            #region Retorna informacion
-
-
-
-            #endregion Retorna informacion
         }
 
         #region Helpers
@@ -528,6 +521,6 @@ namespace Carvajal.Turns.Api.Controllers
             }
         }
 
-        #endregion
+        #endregion Helpers
     }
 }

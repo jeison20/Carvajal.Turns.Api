@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace Component
@@ -26,6 +24,11 @@ namespace Component
             }
         }
 
+        /// <summary>
+        /// Metodo que busca los centros asociados a un usuario
+        /// </summary>
+        /// <param name="IdentificationNumber">identificacion del usuario a consultar</param>
+        /// <returns>lista de centros si el proceso fue exitoso en caso contrario null. </returns>
         public List<Centres> SearchCentresForUser(string IdentificationNumber)
         {
             List<LinkedCentres> ObjectLinkedCentres = new List<LinkedCentres>();
@@ -49,6 +52,12 @@ namespace Component
                 return null;
             }
         }
+
+        /// <summary>
+        ///  Metodo que busca los centros asociados a un usuario
+        /// </summary>
+        /// <param name="IdentificationNumber">identificacion del usuario a consultar</param>
+        /// <returns>un Json de centros con identificacion y nombre si el proceso fue exitoso en caso contrario null.</returns>
         public string SearchCentresForUserJson(string IdentificationNumber)
         {
             List<LinkedCentres> ObjectLinkedCentres = new List<LinkedCentres>();
@@ -78,6 +87,12 @@ namespace Component
                 return null;
             }
         }
+
+        /// <summary>
+        /// Metodo consulta los usuarios asociados a un centro especifico
+        /// </summary>
+        /// <param name="Identification">identificacion del centro</param>
+        /// <returns>Lista de usuarios asociados al centro especificado si el proceso fue exitoso en caso contrario null.</returns>
         public List<Users> SearchUsersForCenter(string Identification)
         {
             List<LinkedCentres> ObjectLinkedCentres = new List<LinkedCentres>();
@@ -101,18 +116,40 @@ namespace Component
                 return null;
             }
         }
+
+        /// <summary>
+        /// Metodo actualiza los centros asociados ha un usuario
+        /// </summary>
+        /// <param name="Identification">identificacion del usuario que se le actualizaran los centros</param>
+        /// <param name="Centres">centros ha asociar al usuario</param>
+        /// <param name="Role">rol del usuario que se actualizara</param>
+        /// <returns>true si el proceso fue exitoso en caso contrario false</returns>
         public bool UpdateCenterUser(string Identification, string Centres, string Role)
         {
-            if (Role.Equals(ConfigurationManager.AppSettings["UserAdmin"]))
+            try
             {
-                return UpdateCenterUserAdmin(Identification, Centres);
+                if (Role.Equals(ConfigurationManager.AppSettings["UserAdmin"]))
+                {
+                    return UpdateCenterUserAdmin(Identification, Centres);
+                }
+                else
+                {
+                    return UpdateCenterUserOperator(Identification, Centres);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return UpdateCenterUserOperator(Identification, Centres);
+                LogComponent.WriteError("0", "0", "UpdateCenterUser" + "BGM" + ex.Message);
+                return false;
             }
-
         }
+
+        /// <summary>
+        /// Metodo para actualizar el centro asociado ha un operador
+        /// </summary>
+        /// <param name="Identification">identificacion del operador al que se le actualizara el centro al que pertenece</param>
+        /// <param name="NewCenter">identificacion del centro al que se asociara</param>
+        /// <returns>true si el proceso fue exitoso en caso contrario false</returns>
         public bool UpdateCenterUserOperator(string Identification, string NewCenter)
         {
             LinkedCentres ObjectLinkedCentres = new LinkedCentres();
@@ -130,12 +167,18 @@ namespace Component
                 return false;
             }
         }
+
+        /// <summary>
+        /// Metodo para actualizar los centros asociados ha un administrador
+        /// </summary>
+        /// <param name="Identification">identificacion del administrador al que se le actualizara los centro s los que pertenece</param>
+        /// <param name="Centres">identificacion de los centros a los que se asociara</param>
+        /// <returns>true si el proceso fue exitoso en caso contrario false</returns>
         public bool UpdateCenterUserAdmin(string Identification, string Centres)
         {
             List<LinkedCentres> ObjectLinkedCentres = new List<LinkedCentres>();
             try
             {
-
                 ObjectLinkedCentres = Instance.LinkedCentres.Where(c => c.FkUsers_Identifier == Identification).ToList();
                 foreach (var item in ObjectLinkedCentres)
                 {
@@ -154,7 +197,6 @@ namespace Component
                     _Instance.SaveChanges();
                 }
 
-
                 return true;
             }
             catch (Exception ex)
@@ -164,6 +206,12 @@ namespace Component
                 return false;
             }
         }
+
+        /// <summary>
+        /// Metodo que busca una relacion entre usuario y centro
+        /// </summary>
+        /// <param name="IdentificationNumber">identificacion unica de LinkedCentres</param>
+        /// <returns>Retorna un objecto LinkedCentres si el proceso fue exitoso en caso contrario null. </returns>
         public LinkedCentres SearchLinkedCenter(long IdentificationNumber)
         {
             LinkedCentres ObjectLinkedCentres = new LinkedCentres();
@@ -180,6 +228,12 @@ namespace Component
                 return null;
             }
         }
+
+        /// <summary>
+        /// Metodo para crear una relacion entre un usuario y uno o mas centros
+        /// </summary>
+        /// <param name="LinkedCenter">Objeto LinkedCentres con la informacion del usuario y del centro </param>
+        /// <returns>true si el proceso fue exitoso en caso contrario false</returns>
         public bool CreateLinkedCenter(LinkedCentres LinkedCenter)
         {
             try
@@ -194,7 +248,6 @@ namespace Component
                 LogComponent.WriteError("0", "0", "CreateLinkedCenter" + "BGM" + ex.Message);
                 return false;
             }
-
         }
     }
 }

@@ -21,6 +21,11 @@ namespace Component
             }
         }
 
+        /// <summary>
+        /// Metodo que permite crear una Company
+        /// </summary>
+        /// <param name="Company">Objeto Company que se desea crear</param>
+        /// <returns>return true si el proceso fue exitoso en caso contrario false</returns>
         public bool SaveCompany(Companies Company)
         {
             try
@@ -36,6 +41,11 @@ namespace Component
             }
         }
 
+        /// <summary>
+        /// Metodo para buscar una empresa por identificacion
+        /// </summary>
+        /// <param name="IdentificationNumber">identificacion de la empresa a buscar</param>
+        /// <returns>retorna un objeto Companies si el proceso fue exitoso en caso contrario un null.</returns>
         public Companies SearchCompany(string IdentificationNumber)
         {
             Companies ObjectCompany = new Companies();
@@ -46,15 +56,17 @@ namespace Component
             }
             catch (Exception ex)
             {
-                if (ObjectCompany != null)
-                    LogComponent.WriteError(ObjectCompany.PkIdentifier, "0", "SearchCompany" + "BGM" + ex.Message);
-                else
-                    LogComponent.WriteError("ErrorConsultBD", "0", "SearchCompany" + "BGM" + ex.Message);
+                LogComponent.WriteError("0", "0", "SearchCompany" + "BGM" + ex.Message);
 
                 return null;
             }
         }
 
+        /// <summary>
+        ///Metodo para realizar la eliminacion de una empresa
+        /// </summary>
+        /// <param name="Company">Objeto Companies con los datos pertenecientes a la empresa a eliminar</param>
+        /// <returns>Return true si la operacion fue exitosa en caso contrario false</returns>
         public bool DeleteCompany(Companies Company)
         {
             try
@@ -69,14 +81,16 @@ namespace Component
             }
             catch (Exception ex)
             {
-                if (Company != null)
-                    LogComponent.WriteError(Company.PkIdentifier, "0", "DeleteCompany" + "BGM" + ex.Message);
-                else
-                    LogComponent.WriteError("ErrorConsultBD", "0", "DeleteCompany" + "BGM" + ex.Message);
+                LogComponent.WriteError("0", "0", "DeleteCompany" + "BGM" + ex.Message);
                 return false;
             }
         }
 
+        /// <summary>
+        ///Metodo para realizar la actualizacion de una empresa
+        /// </summary>
+        /// <param name="Company">Objeto Companies que contiene la informacion de la empresa ha actualizar</param>
+        /// <returns>true si el proceso fue exitoso en caso contrario false</returns>
         public bool UpdateCompany(Companies Company)
         {
             Companies CompanyUpdate = new Companies();
@@ -108,11 +122,8 @@ namespace Component
                 return true;
             }
             catch (Exception ex)
-            {
-                if (CompanyUpdate != null)
-                    LogComponent.WriteError(CompanyUpdate.PkIdentifier, "0", "UpdateCompany" + "BGM" + ex.Message);
-                else
-                    LogComponent.WriteError("ErrorConsultBD", "0", "UpdateCompany" + "BGM" + ex.Message);
+            {              
+                    LogComponent.WriteError("0", "0", "UpdateCompany" + "BGM" + ex.Message);
 
                 return false;
             }

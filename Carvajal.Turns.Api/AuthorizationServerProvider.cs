@@ -1,12 +1,10 @@
-﻿using Carvajal.Turns.Utils.Security;
-using Component;
+﻿using Component;
 using Data;
 using Microsoft.Owin.Security.OAuth;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace Carvajal.Turns.Api
 {
@@ -38,60 +36,27 @@ namespace Carvajal.Turns.Api
                 {
                     string Error = new Utils.Security.Utils().GetResourceMessages("M27");
                     context.SetError("Invalid _grant", Error);
-                    return;
                 }
-                 
             }
             else
             {
                 string Error = new Utils.Security.Utils().GetResourceMessages("M7");
                 context.SetError("Invalid _grant", Error);
-                return;
             }
         }
 
         public override async Task TokenEndpointResponse(OAuthTokenEndpointResponseContext context)
         {
-
             var accessToken = context.AccessToken;
 
-            ClaimsPrincipal principal = HttpContext.Current.User as ClaimsPrincipal;
-
-            string name = context.Identity.Name;
-            string Rol = string.Empty;
-            string Status = string.Empty;
             string User = string.Empty;
-            string Email = string.Empty;
-            string Country = string.Empty;
-            string Company = string.Empty;
 
-            var identity = (ClaimsIdentity)context.Identity;
+            var identity = context.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             foreach (var item in claims)
             {
-                switch (item.Type)
-                {
-                    case "Rol":
-                        Rol = item.Value;
-                        break;
-                    case "Status":
-                        Status = item.Value;
-                        break;
-                    case "User":
-                        User = item.Value;
-                        break;
-                    case "Email":
-                        Email = item.Value;
-                        break;
-                    case "Country":
-                        Country = item.Value;
-                        break;
-                    case "Company":
-                        Company = item.Value;
-                        break;
-                    default:
-                        break;
-                }
+                if (item.Type.Equals("User"))
+                    User = item.Value;
             }
 
             CClient.Instance.InactiveTokenVigentes(User);
@@ -103,6 +68,5 @@ namespace Carvajal.Turns.Api
             ObjectClient.AllowedOrigin = CClient.Instance.Encode(ObjectClient.Token);
             CClient.Instance.SaveClient(ObjectClient);
         }
-
     }
 }
