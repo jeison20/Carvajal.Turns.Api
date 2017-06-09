@@ -588,7 +588,7 @@ namespace Carvajal.Turns.Api.Controllers
         public async Task<HttpResponseMessage> TypeUserRole(string Role)
         {
             var tokenRequest = HttpContext.Current.GetOwinContext().Request.Headers.Get("Authorization").Split(' ')[1];
-           
+
             List<Roles> ListObjectRol;
 
             if (CClient.Instance.ValidToken(tokenRequest))
@@ -728,8 +728,8 @@ namespace Carvajal.Turns.Api.Controllers
         /// <returns>Objeto con una lista de usuarios que cumplen con los filtros manejados</returns>
         [AllowAnonymous]
         [HttpGet]
-        [Route("ManagerUsers/Get")]
-        public async Task<HttpResponseMessage> ManagerUsers(string Rol, string Identification, string Name, string Active, string DeliveryCenter)
+        [Route("GetList")]
+        public async Task<HttpResponseMessage> GetList(string Rol, string Identification, string Name, string Active, string DeliveryCenter)
         {
             if (string.IsNullOrEmpty(Rol) && string.IsNullOrEmpty(Identification))
             {
@@ -795,8 +795,8 @@ namespace Carvajal.Turns.Api.Controllers
         /// <returns>mensaje con el resultado de la operacion</returns>
         [AllowAnonymous]
         [HttpPost]
-        [Route("ModifyUsers/Post")]
-        public async Task<HttpResponseMessage> ModifyUsers([FromBody]Domain.Request.RequestCreateEventUser Event)
+        [Route("Modify")]
+        public async Task<HttpResponseMessage> Modify([FromBody]Domain.Request.RequestCreateEventUser Event)
         {
             try
             {
@@ -878,12 +878,12 @@ namespace Carvajal.Turns.Api.Controllers
 
                                 if (ValidSendEmail)
                                 {
-                                    var msg = new Carvajal.Turns.Domain.Entities.Message
+                                    var msg = new Domain.Entities.Message
                                     {
                                         From = new Domain.Entities.Address(ConfigurationManager.AppSettings["emailFrom"]),
                                         To = new Domain.Entities.Address(ObjectUser.Email),
                                         IsBodyHtml = true,
-                                        Body = MessageUtils.GetTemplateChangeMail(ObjectUser.Name, ObjectUser.Password),
+                                        Body = MessageUtils.GetTemplateChangeMail(ObjectUser.Name, ObjectUser.Password,"","",""),
                                         Subject = ConfigurationManager.AppSettings["subjectChangeEmail"],
                                     };
 
@@ -931,8 +931,8 @@ namespace Carvajal.Turns.Api.Controllers
         /// <returns>Mensaje con el estado de la operacion</returns>
         [AllowAnonymous]
         [HttpPost]
-        [Route("CreateUsers/Post")]
-        public async Task<HttpResponseMessage> CreateUsers([FromBody]Domain.Request.RequestCreateEventUser Event)
+        [Route("Create")]
+        public async Task<HttpResponseMessage> Create([FromBody]Domain.Request.RequestCreateEventUser Event)
         {
             try
             {
@@ -1013,14 +1013,27 @@ namespace Carvajal.Turns.Api.Controllers
                                 ObjectUser.FkCompanies_Identifier = AuthenticatedUser.FkCompanies_Identifier;
 
                                 CUsers.Instance.SaveChanges();
+                                var data = (from u in CUsers.Instance.Users
+                                            join c in CCompanies.Instance.Companies on u.FkCompanies_Identifier equals c.PkIdentifier
+                                            join b in CCountries.Instance.Countries
+                                            on c.FkCountries_Identifier equals b.PkIdentifier
+                                            where c.PkIdentifier == ObjectUser.FkCompanies_Identifier
+                                            select new
+                                            {
+                                                Name = u.Name,
+                                                PkIdentifier = u.PkIdentifier,
+                                                Password = Password,
+                                                CompanyName = c.Name,
+                                                CountryName = b.Name
+                                            }).FirstOrDefault();
 
                                 var msg = new Domain.Entities.Message
                                 {
                                     From = new Domain.Entities.Address(ConfigurationManager.AppSettings["emailFrom"]),
                                     To = new Domain.Entities.Address(ObjectUser.Email),
                                     IsBodyHtml = true,
-                                    Body = MessageUtils.GetTemplateChangeMail(ObjectUser.Name, ObjectUser.Password),
-                                    Subject = ConfigurationManager.AppSettings["subjectRecoveryPassword"],
+                                    Body = MessageUtils.GetTemplateNewUserMail(data.Name, data.PkIdentifier, data.Password, data.CountryName, data.CompanyName),
+                                    Subject = ConfigurationManager.AppSettings["subjectNewUserEmail"],
                                 };
 
                                 MailManService.Send(msg);
@@ -1046,13 +1059,27 @@ namespace Carvajal.Turns.Api.Controllers
                             {
                                 if (CUsers.Instance.SaveUser(new Users { PkIdentifier = Event.PkIdentifier, ChangePasswordNextTime = true, Password = Password, Name = Event.Name, LastAccess = null, FkRole_Identifier = Event.FkRole_Identifier, Email = Event.Email, Phone = Event.Phone, LastChangeDate = DateTime.Now, FkCompanies_Identifier = AuthenticatedUser.FkCompanies_Identifier, FkCountries_Identifier = AuthenticatedUser.FkCountries_Identifier }))
                                 {
+                                    var data = (from u in CUsers.Instance.Users
+                                                join c in CCompanies.Instance.Companies on u.FkCompanies_Identifier equals c.PkIdentifier
+                                                join b in CCountries.Instance.Countries
+                                                on c.FkCountries_Identifier equals b.PkIdentifier
+                                                where c.PkIdentifier == ObjectUser.FkCompanies_Identifier
+                                                select new
+                                                {
+                                                    Name = u.Name,
+                                                    PkIdentifier = u.PkIdentifier,
+                                                    Password = Password,
+                                                    CompanyName=c.Name,
+                                                    CountryName=b.Name
+                                                }).FirstOrDefault();
+
                                     var msg = new Domain.Entities.Message
                                     {
                                         From = new Domain.Entities.Address(ConfigurationManager.AppSettings["emailFrom"]),
                                         To = new Domain.Entities.Address(ObjectUser.Email),
                                         IsBodyHtml = true,
-                                        Body = MessageUtils.GetTemplateChangeMail(ObjectUser.Name, ObjectUser.Password),
-                                        Subject = ConfigurationManager.AppSettings["subjectRecoveryPassword"],
+                                        Body = MessageUtils.GetTemplateNewUserMail(data.Name, data.PkIdentifier, data.Password,data.CountryName,data.CompanyName),
+                                        Subject = ConfigurationManager.AppSettings["subjectNewUserEmail"],
                                     };
 
                                     MailManService.Send(msg);

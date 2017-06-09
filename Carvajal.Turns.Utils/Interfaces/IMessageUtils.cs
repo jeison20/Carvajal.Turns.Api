@@ -22,8 +22,22 @@
         /// Metodo que realiza la busqueda de la plantilla html ChangeMail para recordatorio de usuario y contraseña al cambiar de email almacenada en un recurso para su uso en un email
         /// </summary>
         /// <param name="UserName">usuario identificacion</param>
+        /// <param name="User">Pk de identificacion del usuario</param>
         /// <param name="Password">contraseña almacenada</param>
+        /// <param name="Country">Pais asociado a la compañia del usuario </param>
+        /// <param name="Comerce">Nombre de la empresa a la que se encuentra vinculado el usuario</param>
         /// <returns>Retorna un html</returns>
-        string GetTemplateChangeMail(string UserName, string Password);
+        string GetTemplateChangeMail(string UserName, string User, string Password, string Country, string Comerce);
+
+        /// <summary>
+        /// Metodo que realiza la busqueda de la plantilla html para la creacion de nuevo  usuario almacenada en un recurso para su uso en un email
+        /// </summary>
+        /// <param name="UserName">usuario identificacion</param>
+        /// <param name="User">Pk de identificacion del usuario</param>
+        /// <param name="Password">contraseña almacenada</param>
+        /// <param name="Country">Pais asociado a la compañia del usuario </param>
+        /// <param name="Comerce">Nombre de la empresa a la que se encuentra vinculado el usuario</param>
+        /// <returns>Retorna un html</returns>
+        string GetTemplateNewUserMail(string UserName, string User, string Password, string Country, string Comerce);
     }
 }

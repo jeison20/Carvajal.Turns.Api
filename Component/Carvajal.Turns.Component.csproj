@@ -59,6 +59,7 @@
     <Compile Include="CCentres.cs" />
     <Compile Include="CClient.cs" />
     <Compile Include="CCompanies.cs" />
+    <Compile Include="CCountries.cs" />
     <Compile Include="CLinkedCentres.cs" />
     <Compile Include="COptions.cs" />
     <Compile Include="COptionsRol.cs" />

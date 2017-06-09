@@ -36,13 +36,16 @@ namespace Carvajal.Turns.Utils.Mail
         /// <param name="UserName">usuario identificacion</param>
         /// <param name="Password">contraseña almacenada</param>
         /// <returns>Retorna un html</returns>
-        public string GetTemplateChangeMail(string UserName, string Password)
+        public string GetTemplateChangeMail(string UserName, string User, string Password, string Country, string Comerce)
         {
             try
             {
                 var messageTemplate = ResourceUtils.SendUserPassword;
                 messageTemplate = messageTemplate.Replace("<%UserName%>", UserName);
+                messageTemplate = messageTemplate.Replace("<%User%>", User);
                 messageTemplate = messageTemplate.Replace("<%Password%>", Password);
+                messageTemplate = messageTemplate.Replace("<%Country%>", Country);
+                messageTemplate = messageTemplate.Replace("<%Comerce%>", Comerce);
                 return messageTemplate;
             }
             catch (Exception ex)
@@ -51,6 +54,32 @@ namespace Carvajal.Turns.Utils.Mail
                 return null;
             }
         }
+
+        /// <summary>
+        /// Metodo que realiza la busqueda de la plantilla html para la creacion de nuevo  usuario almacenada en un recurso para su uso en un email
+        /// </summary>
+        /// <param name="UserName">usuario identificacion</param>
+        /// <param name="Password">contraseña almacenada</param>
+        /// <returns>Retorna un html</returns>
+        public string GetTemplateNewUserMail(string UserName, string User, string Password, string Country, string Comerce)
+        {
+            try
+            {
+                var messageTemplate = ResourceUtils.NewUserEmail;
+                messageTemplate = messageTemplate.Replace("<%UserName%>", UserName);
+                messageTemplate = messageTemplate.Replace("<%User%>", User);
+                messageTemplate = messageTemplate.Replace("<%Password%>", Password);
+                messageTemplate = messageTemplate.Replace("<%Country%>", Country);
+                messageTemplate = messageTemplate.Replace("<%Comerce%>", Comerce);
+                return messageTemplate;
+            }
+            catch (Exception ex)
+            {
+                // TODO: Pendiente implementar log para control de execpciones.
+                return null;
+            }
+        }
+
 
         /// <summary>
         /// 

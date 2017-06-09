@@ -63,6 +63,62 @@ namespace Carvajal.Turns.Utils.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &lt;html&gt;
         ///&lt;head&gt;
+        ///&lt;meta charset=&quot;utf-8&quot; /&gt;
+        ///&lt;/head&gt;
+        ///&lt;!-- &lt;body&gt; --&gt;
+        ///&lt;div class=&quot;container&quot;&gt;
+        ///	&lt;div style=&quot;padding-top:50px&quot;&gt;
+        ///	&lt;/div&gt;
+        ///	&lt;div  style=&quot;padding-top:50px !important&quot;&gt;
+        ///		&lt;div class=&quot;col-md-12&quot;&gt;
+        ///		
+        ///		
+        ///		&lt;b&gt;Apreciado &lt;%UserName%&gt;&lt;/b&gt;
+        ///		&lt;br&gt;		
+        ///		&lt;br&gt;
+        ///		
+        ///		&lt;p style=&quot;text-align:justify&quot;&gt;		
+        ///			Esta comunicación es para notificarle que se ha realizado cambios en la información de su correo electrónico, lo cual ocasiono un cambio en la contraseña para el ingreso al Servicio de Agendamiento de Tu [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ChangeEmail {
+            get {
+                return ResourceManager.GetString("ChangeEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html&gt;
+        ///&lt;head&gt;
+        ///&lt;meta charset=&quot;utf-8&quot; /&gt;
+        ///&lt;/head&gt;
+        ///&lt;!-- &lt;body&gt; --&gt;
+        ///&lt;div class=&quot;container&quot;&gt;
+        ///	&lt;div style=&quot;padding-top:50px&quot;&gt;
+        ///	&lt;/div&gt;
+        ///	&lt;div  style=&quot;padding-top:50px !important&quot;&gt;
+        ///		&lt;div class=&quot;col-md-12&quot;&gt;
+        ///		
+        ///		
+        ///		&lt;b&gt;Apreciado &lt;%UserName%&gt;&lt;/b&gt;
+        ///		&lt;br&gt;		
+        ///		&lt;br&gt;
+        ///		
+        ///		&lt;p style=&quot;text-align:justify&quot;&gt;		
+        ///			Esta comunicación es para notificarle que se ha realizado la creación de su usuario para el ingreso al Servicio de Agendamiento de Turnos.
+        /// &lt;/p&gt;
+        /// &lt;p&gt;
+        ///   País: &lt;%Country%&gt;&lt;br&gt;
+        ///   Comercio: &lt;%Comerce%&gt; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string NewUserEmail {
+            get {
+                return ResourceManager.GetString("NewUserEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html&gt;
+        ///&lt;head&gt;
         ///&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css&quot; integrity=&quot;sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u&quot; crossorigin=&quot;anonymous&quot;&gt;
         ///&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css&quot; integrity=&quot;sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp&quot; crossorigin=&quot;anonymous&quot;&gt;
         ///&lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootst [rest of string was truncated]&quot;;.

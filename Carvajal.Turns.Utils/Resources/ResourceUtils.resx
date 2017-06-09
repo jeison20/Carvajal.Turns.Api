@@ -117,6 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ChangeEmail" xml:space="preserve">
+    <value>&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8" /&gt;
+&lt;/head&gt;
+&lt;!-- &lt;body&gt; --&gt;
+&lt;div class="container"&gt;
+	&lt;div style="padding-top:50px"&gt;
+	&lt;/div&gt;
+	&lt;div  style="padding-top:50px !important"&gt;
+		&lt;div class="col-md-12"&gt;
+		
+		
+		&lt;b&gt;Apreciado &lt;%UserName%&gt;&lt;/b&gt;
+		&lt;br&gt;		
+		&lt;br&gt;
+		
+		&lt;p style="text-align:justify"&gt;		
+			Esta comunicación es para notificarle que se ha realizado cambios en la información de su correo electrónico, lo cual ocasiono un cambio en la contraseña para el ingreso al Servicio de Agendamiento de Turnos.
+ &lt;/p&gt;
+ &lt;p&gt;
+   País: &lt;%Country%&gt;&lt;br&gt;
+   Comercio: &lt;%Comerce%&gt;&lt;br&gt;
+   Usuario: &lt;%User%&gt;&lt;br&gt;
+   Nueva Contraseña:&lt;%Password%&gt;&lt;br&gt;
+			
+		&lt;/p&gt;
+
+	
+		&lt;p style="font-size:18px;color:#999999;text-align:justify !important"&gt; Este es un sistema automático de aviso, por favor no responda este mensaje al correo&lt;/font&gt;.&lt;br&gt;		
+		&lt;/p&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div style="padding-top:50px !important"&gt;
+	&lt;/div&gt;
+&lt;/div&gt; 
+&lt;body&gt;
+&lt;/html&gt;</value>
+    <comment>html enviar cuando se realiza un cambio de email</comment>
+  </data>
+  <data name="NewUserEmail" xml:space="preserve">
+    <value>&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8" /&gt;
+&lt;/head&gt;
+&lt;!-- &lt;body&gt; --&gt;
+&lt;div class="container"&gt;
+	&lt;div style="padding-top:50px"&gt;
+	&lt;/div&gt;
+	&lt;div  style="padding-top:50px !important"&gt;
+		&lt;div class="col-md-12"&gt;
+		
+		
+		&lt;b&gt;Apreciado &lt;%UserName%&gt;&lt;/b&gt;
+		&lt;br&gt;		
+		&lt;br&gt;
+		
+		&lt;p style="text-align:justify"&gt;		
+			Esta comunicación es para notificarle que se ha realizado la creación de su usuario para el ingreso al Servicio de Agendamiento de Turnos.
+ &lt;/p&gt;
+ &lt;p&gt;
+   País: &lt;%Country%&gt;&lt;br&gt;
+   Comercio: &lt;%Comerce%&gt;&lt;br&gt;
+   Usuario: &lt;%User%&gt;&lt;br&gt;
+   Nueva Contraseña:&lt;%Password%&gt;&lt;br&gt;
+			
+		&lt;/p&gt;
+
+	
+		&lt;p style="font-size:18px;color:#999999;text-align:justify !important"&gt; Este es un sistema automático de aviso, por favor no responda este mensaje al correo&lt;/font&gt;.&lt;br&gt;		
+		&lt;/p&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div style="padding-top:50px !important"&gt;
+	&lt;/div&gt;
+&lt;/div&gt; 
+&lt;body&gt;
+&lt;/html&gt;</value>
+  </data>
   <data name="RestorePassword" xml:space="preserve">
     <value>&lt;html&gt;
 &lt;head&gt;
